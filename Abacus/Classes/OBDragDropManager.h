@@ -55,6 +55,12 @@
 @property (nonatomic, strong) NSArray *values;
 @property (nonatomic, strong) NSArray *input;
 
+//node linkage
+@property (nonatomic,strong)NSMutableArray *inputNodes;
+@property (nonatomic,strong)NSMutableArray *ouputNodes;
+
+
+
 @property (nonatomic, assign) CGPoint offsetOvumAndTouch;
 @property (nonatomic, assign) CGPoint shiftPinchCentroid;
 @property (nonatomic, assign) CGFloat scale;
