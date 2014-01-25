@@ -50,9 +50,17 @@
 @property (nonatomic, assign) BOOL isCentered;
 @property (nonatomic, assign) BOOL shouldScale;
 
+// node properties
+@property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSArray *values;
+@property (nonatomic, strong) NSArray *input;
+
 @property (nonatomic, assign) CGPoint offsetOvumAndTouch;
 @property (nonatomic, assign) CGPoint shiftPinchCentroid;
 @property (nonatomic, assign) CGFloat scale;
+
+-(id)initWithType:(NSString *)type;
+-(NSString*) toJSON;
 
 @end
 
