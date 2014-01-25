@@ -24,6 +24,7 @@
 		DC02ABC31893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABBE1893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.m */; };
 		DC02ABC41893827A004DA6E0 /* UIView+OBDropZone.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABC01893827A004DA6E0 /* UIView+OBDropZone.m */; };
 		DC02ABC71893836F004DA6E0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABC61893836F004DA6E0 /* ViewController.m */; };
+		DC02ABCA18938424004DA6E0 /* AdditionalSourcesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABC918938424004DA6E0 /* AdditionalSourcesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		DC02ABC01893827A004DA6E0 /* UIView+OBDropZone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OBDropZone.m"; sourceTree = "<group>"; };
 		DC02ABC51893836F004DA6E0 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		DC02ABC61893836F004DA6E0 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		DC02ABC818938424004DA6E0 /* AdditionalSourcesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdditionalSourcesViewController.h; path = ../../OBDragDrop/OBDragDropTest/OBDragDropTest/AdditionalSourcesViewController.h; sourceTree = "<group>"; };
+		DC02ABC918938424004DA6E0 /* AdditionalSourcesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdditionalSourcesViewController.m; path = ../../OBDragDrop/OBDragDropTest/OBDragDropTest/AdditionalSourcesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +132,8 @@
 				DC02AB97189379E1004DA6E0 /* AppDelegate.m */,
 				DC02ABC51893836F004DA6E0 /* ViewController.h */,
 				DC02ABC61893836F004DA6E0 /* ViewController.m */,
+				DC02ABC818938424004DA6E0 /* AdditionalSourcesViewController.h */,
+				DC02ABC918938424004DA6E0 /* AdditionalSourcesViewController.m */,
 				DC02AB99189379E1004DA6E0 /* Images.xcassets */,
 				DC02AB8E189379E1004DA6E0 /* Supporting Files */,
 			);
@@ -231,11 +236,6 @@
 				TargetAttributes = {
 					DC02AB83189379E1004DA6E0 = {
 						DevelopmentTeam = 2QBT4HF69Q;
-						SystemCapabilities = {
-							com.apple.InterAppAudio = {
-								enabled = 0;
-							};
-						};
 					};
 					DC02AB9E189379E1004DA6E0 = {
 						TestTargetID = DC02AB83189379E1004DA6E0;
@@ -285,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC02ABCA18938424004DA6E0 /* AdditionalSourcesViewController.m in Sources */,
 				DC02ABC71893836F004DA6E0 /* ViewController.m in Sources */,
 				DC02ABC31893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.m in Sources */,
 				DC02ABC11893827A004DA6E0 /* OBDragDropManager.m in Sources */,
