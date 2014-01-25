@@ -12,10 +12,10 @@
 
 @interface ViewController : UIViewController <OBOvumSource, OBDropZone, UIPopoverControllerDelegate>
 {
-    UIScrollView *leftView;
-    NSMutableArray *leftViewContents;
-    UIScrollView *rightView;
-    NSMutableArray *rightViewContents;
+    UIScrollView *bottomView;
+    NSMutableArray *bottomViewContents;
+    UIView *topView;
+    NSMutableArray *topViewContents;
     
     UIPopoverController *sourcesPopoverController;
     AdditionalSourcesViewController *additionalSourcesViewController;

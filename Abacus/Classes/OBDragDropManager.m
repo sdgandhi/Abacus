@@ -230,6 +230,7 @@
 
 -(void) handleOvumMove:(OBOvum*)ovum inWindow:(UIWindow*)window atLocation:(CGPoint)locationInWindow
 {
+   // NSLog(@"Handle Ovum Move called");
   UIView *handlingView = [self findDropZoneHandlerInWindow:window atLocation:locationInWindow];
   CGPoint locationInView = [window convertPoint:locationInWindow toView:handlingView];
 
