@@ -18,6 +18,11 @@
 @synthesize dataObject;
 @synthesize tag;
 @synthesize dropAction;
+
+@synthesize input;
+@synthesize type;
+@synthesize values;
+
 @synthesize currentDropHandlingView;
 
 @synthesize dragView;
@@ -40,10 +45,38 @@
   return self;
 }
 
+- (id)initWithType:(NSString*)ovumType
+{
+    self = [super init];
+    if (self) {
+        self.isCentered = YES;
+        self.shouldScale = NO;
+    }
+    
+    self.type = ovumType;
+    
+    return self;
+}
+
 -(void) dealloc
 {
   self.source = nil;
 
+}
+-(NSString*) toJSON
+{
+    NSString *json;
+    if ([type isEqualToString: @"val"]) {
+        json = [NSString stringWithFormat:@"{\n\"type\":\"%@\",\n\"in\":[\n%@\n]\n}\n", type, input[0]];
+    } else {
+        NSMutableString *inputJSON = [[NSMutableString alloc] init];
+        for (OBOvum *inputOvum in input) {
+            [inputJSON appendString:[inputOvum toJSON]];
+            [inputJSON appendString:@" , "];
+        }
+        json = [NSString stringWithFormat:@"{\n\"type\":\"%@\",\n\"in\":[\n%@]}",type,inputJSON];
+    }
+    return json;
 }
 
 @end
