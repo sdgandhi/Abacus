@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7040F7CF-3494-49F8-ACE1-50E8A4063E58</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Abacus</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>5E838221-CF74-4A24-9883-4F02204CEF6A</key>
+		<string>https://github.com/sdgandhi/Abacus.git</string>
+		<key>8A980BB5-EA18-4E2B-A450-3F145486705E</key>
+		<string>https://github.com/Oblong/OBDragDrop.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Abacus.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>5E838221-CF74-4A24-9883-4F02204CEF6A</key>
+		<string>../..</string>
+		<key>8A980BB5-EA18-4E2B-A450-3F145486705E</key>
+		<string>../../../OBDragDrop</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/sdgandhi/Abacus.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>5E838221-CF74-4A24-9883-4F02204CEF6A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5E838221-CF74-4A24-9883-4F02204CEF6A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Abacus</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8A980BB5-EA18-4E2B-A450-3F145486705E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>OBDragDrop</string>
+		</dict>
+	</array>
+</dict>
+</plist>

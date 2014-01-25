@@ -18,8 +18,8 @@
     
     self.viewController = [[ViewController alloc] initWithNibName:nil bundle:nil];
     
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
-    self.window.rootViewController = navController;
+    self.window.rootViewController = self.viewController;
+
     [self.window makeKeyAndVisible];
     
     OBDragDropManager *manager = [OBDragDropManager sharedManager];

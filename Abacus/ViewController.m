@@ -67,14 +67,14 @@ static NSInteger kItemViewIndex = 100;
     self.view.backgroundColor = [UIColor blackColor];
     
     
-    UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
-    self.navigationItem.leftBarButtonItem = popoverItem;
+    //UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
+   // self.navigationItem.leftBarButtonItem = popoverItem;
     
     
     OBDragDropManager *dragDropManager = [OBDragDropManager sharedManager];
     
     CGRect viewFrame = self.view.frame;
-    CGRect frame = CGRectMake(0, 0, viewFrame.size.width/2, viewFrame.size.height);
+    CGRect frame = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height/2);
     frame = CGRectInset(frame, 20.0, 20.0);
     leftView = [[UIScrollView alloc] initWithFrame:frame];
     leftView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
@@ -82,7 +82,7 @@ static NSInteger kItemViewIndex = 100;
     [self.view addSubview:leftView];
     
     
-    frame = CGRectMake(viewFrame.size.width/2, 0, viewFrame.size.width/2, viewFrame.size.height);
+    frame = CGRectMake(0, viewFrame.size.height/2, viewFrame.size.width, viewFrame.size.height/1.3);
     frame = CGRectInset(frame, 20.0, 20.0);
     rightView = [[UIScrollView alloc] initWithFrame:frame];
     rightView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin;

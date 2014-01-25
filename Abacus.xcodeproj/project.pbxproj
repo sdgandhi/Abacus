@@ -129,11 +129,11 @@
 			isa = PBXGroup;
 			children = (
 				DC02AB96189379E1004DA6E0 /* AppDelegate.h */,
+				DC02AB97189379E1004DA6E0 /* AppDelegate.m */,
 				DC02ABC51893836F004DA6E0 /* ViewController.h */,
 				DC02ABC61893836F004DA6E0 /* ViewController.m */,
 				DC02ABC818938424004DA6E0 /* AdditionalSourcesViewController.h */,
 				DC02ABC918938424004DA6E0 /* AdditionalSourcesViewController.m */,
-				DC02AB97189379E1004DA6E0 /* AppDelegate.m */,
 				DC02AB99189379E1004DA6E0 /* Images.xcassets */,
 				DC02AB8E189379E1004DA6E0 /* Supporting Files */,
 			);
@@ -234,6 +234,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Sidhant Gandhi";
 				TargetAttributes = {
+					DC02AB83189379E1004DA6E0 = {
+						DevelopmentTeam = 2QBT4HF69Q;
+					};
 					DC02AB9E189379E1004DA6E0 = {
 						TestTargetID = DC02AB83189379E1004DA6E0;
 					};
@@ -410,10 +413,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Abacus/Abacus-Prefix.pch";
 				INFOPLIST_FILE = "Abacus/Abacus-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -423,10 +429,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Abacus/Abacus-Prefix.pch";
 				INFOPLIST_FILE = "Abacus/Abacus-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -492,6 +501,7 @@
 				DC02ABB2189379E1004DA6E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DC02ABB3189379E1004DA6E0 /* Build configuration list for PBXNativeTarget "AbacusTests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +510,7 @@
 				DC02ABB5189379E1004DA6E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
