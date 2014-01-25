@@ -72,7 +72,9 @@
         NSMutableString *inputJSON = [[NSMutableString alloc] init];
         for (OBOvum *inputOvum in input) {
             [inputJSON appendString:[inputOvum toJSON]];
-            [inputJSON appendString:@" , "];
+            if (!([inputOvum isEqual:[input lastObject]])) {
+                [inputJSON appendString:@" , "];
+            }
         }
         json = [NSString stringWithFormat:@"{\n\"type\":\"%@\",\n\"in\":[\n%@]}",type,inputJSON];
     }

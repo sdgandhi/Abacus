@@ -25,6 +25,29 @@
     OBDragDropManager *manager = [OBDragDropManager sharedManager];
     [manager prepareOverlayWindowUsingMainWindow:self.window];
     
+    OBOvum *ovum1 = [[OBOvum alloc] initWithType:@"add"];
+    OBOvum *ovum2 = [[OBOvum alloc] initWithType:@"val"];
+    OBOvum *ovum3 = [[OBOvum alloc] initWithType:@"val"];
+    [ovum2 setInput: [NSArray arrayWithObjects:@5, nil]];
+    [ovum3 setInput: [NSArray arrayWithObjects:@10, nil]];
+    [ovum1 setInput: [NSArray arrayWithObjects:ovum2,ovum3, nil]];
+    NSArray *ovums = [[NSArray alloc] initWithObjects:ovum1, ovum2, ovum3, nil];
+    NSLog(@"JSON output \n\n%@",[ovums[0] toJSON]);
+    NSString *jsonRequest = [ovums[0] toJSON];
+    
+    NSURL *url = [NSURL URLWithString:@"http://default-environment-c3nuuemgkx.elasticbeanstalk.com/"];
+    //NSURL *url = [NSURL URLWithString:@"10.55.51.229:8080"];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSData *requestData = [NSData dataWithBytes:[jsonRequest UTF8String] length:[jsonRequest length]];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: requestData];
+    
+    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+    
     return YES;
 }
 
@@ -53,6 +76,39 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    // A response has been received, this is where we initialize the instance var you created
+    // so that we can append data to it in the didReceiveData method
+    // Furthermore, this method is called each time there is a redirect so reinitializing it
+    // also serves to clear it
+    _responseData = [[NSMutableData alloc] init];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    // Append the new data to the instance variable you declared
+    [_responseData appendData:data];
+    NSString *a = [[NSString alloc] initWithData:_responseData encoding:NSASCIIStringEncoding];
+    
+    NSLog(@"Response Data: %@", a);
+}
+
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection
+                  willCacheResponse:(NSCachedURLResponse*)cachedResponse {
+    // Return nil to indicate not necessary to store a cached response for this connection
+    return nil;
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    // The request is complete and data has been received
+    // You can parse the stuff in your instance variable now
+    
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    // The request has failed for some reason!
+    // Check the error var
 }
 
 @end

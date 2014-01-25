@@ -16,6 +16,7 @@
 @implementation AbacusTests
 
 NSArray *ovums;
+BOOL waitingForBlock = YES;
 
 - (void)setUp
 {
@@ -36,13 +37,11 @@ NSArray *ovums;
     [super tearDown];
 }
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
-
 - (void)testJSONOutput
 {
+    // Set the flag to YES
+    waitingForBlock = YES;
+    
     NSLog(@"JSON output \n\n%@",[ovums[0] toJSON]);
     NSString *jsonRequest = [ovums[0] toJSON];
     
@@ -59,7 +58,42 @@ NSArray *ovums;
     
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
     
+    while(waitingForBlock) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+    }
+    
+    /*
+        [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            if ([data length] >0 && connectionError == nil)
+            {
+                NSMutableData *d = [[NSMutableData data] alloc];
+                [d appendData:data];
+                
+                NSString *a = [[NSString alloc] initWithData:d encoding:NSASCIIStringEncoding];
+                
+                NSLog(@"Response Data: %@", a);
+                waitingForBlock = NO;
+                
+            }
+            else if ([data length] == 0 && connectionError == nil)
+            {
+                NSLog(@"Nothing was downloaded.");
+                waitingForBlock = NO;
+            }
+            else if (connectionError != nil){
+                NSLog(@"Error = %@", connectionError);
+                waitingForBlock = NO;
+            }
+        }];
+    // Run the loop
+    while(waitingForBlock) {
+        //do nothing.
+    }
+     */
+    
 }
+
 
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
@@ -69,6 +103,8 @@ NSArray *ovums;
     NSString *a = [[NSString alloc] initWithData:d encoding:NSASCIIStringEncoding];
     
     NSLog(@"Response Data: %@", a);
+    waitingForBlock = NO;
+    
 }
 
 @end

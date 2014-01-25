@@ -129,7 +129,6 @@ static NSInteger kNumberOfButtons = 20;
     //[self layoutScrollView:rightView withContents:rightViewContents];
 }
 
-
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -183,8 +182,6 @@ static NSInteger kNumberOfButtons = 20;
     }
     return insertionIndex;
 }
-
-
 
 #pragma mark - OBOvumSource
 
