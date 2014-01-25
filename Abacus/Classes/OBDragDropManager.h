@@ -43,6 +43,11 @@
 @property (nonatomic, strong) NSString *tag;
 @property (nonatomic, assign) OBDropAction dropAction;
 
+// node properties
+@property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSArray *values;
+@property (nonatomic, strong) NSArray *input;
+
 // The drop target that the ovum is currenly over
 @property (nonatomic, weak) UIView *currentDropHandlingView;
 @property (nonatomic, strong) UIView *dragView;
@@ -53,7 +58,8 @@
 @property (nonatomic, assign) CGPoint offsetOvumAndTouch;
 @property (nonatomic, assign) CGPoint shiftPinchCentroid;
 @property (nonatomic, assign) CGFloat scale;
-
+-(id)initWithType:(NSString *)type;
+-(NSString*) toJSON;
 @end
 
 
