@@ -8,19 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "OBDragDrop.h"
+#import "AdditionalSourcesViewController.h"
 
 @interface ViewController : UIViewController <OBOvumSource, OBDropZone, UIPopoverControllerDelegate>
 {
-    UIScrollView *bottomView;
-    NSMutableArray *bottomViewContents;
-    UIView *topView;
-    NSMutableArray *topViewContents;
+    UIScrollView *leftView;
+    NSMutableArray *leftViewContents;
+    UIScrollView *rightView;
+    NSMutableArray *rightViewContents;
     
     UIPopoverController *sourcesPopoverController;
-    OBDragDropManager *dragDropManager;
-    
-    NSMutableArray *xPositions;
-    int currentDragIndex;
+    AdditionalSourcesViewController *additionalSourcesViewController;
 }
 
 @end
