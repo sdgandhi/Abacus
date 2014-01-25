@@ -12,7 +12,7 @@
 
 
 static NSInteger kItemViewIndex = 100;
-static NSInteger kNumberOfButtons = 5;
+static NSInteger kNumberOfButtons = 20;
 
 
 @implementation ViewController
@@ -30,7 +30,7 @@ static NSInteger kNumberOfButtons = 5;
     NSLog(@"bottom view bounds bounds: %@",NSStringFromCGRect(contentBounds));
 
     
-    CGSize margin = CGSizeMake(15.0, 15.0);
+    CGSize margin = CGSizeMake(40.0, 15.0);
    // CGFloat itemWidth = bounds.size.width - 2 * margin.width;
   //  CGFloat itemHeight = itemWidth * 9 / 16.0;
     CGFloat x = margin.width;
@@ -46,14 +46,14 @@ static NSInteger kNumberOfButtons = 5;
         NSLog(@"Content bounds: %@", NSStringFromCGRect(contentBounds));
     }
     
-    scrollView.contentSize = contentBounds.size;
+   // scrollView.contentSize = contentBounds.size;
 }
 
 
 -(UIView *) createItemView : (int)indexOfView
 {
     static CGFloat (^randFloat)(CGFloat, CGFloat) = ^(CGFloat min, CGFloat max) { return min + (max-min) * (CGFloat)random() / RAND_MAX; };
-    UIView *itemView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 120)];
+    UIView *itemView = [[UIView alloc] initWithFrame:CGRectMake(0, [xPositions[indexOfView] intValue], 120, 120)];
     itemView.backgroundColor = [UIColor colorWithHue:randFloat(0.0, 1.0) saturation:randFloat(0.5, 1.0) brightness:randFloat(0.3, 1.0) alpha:1.0];
     itemView.tag = kItemViewIndex++;
     return itemView;
@@ -70,12 +70,22 @@ static NSInteger kNumberOfButtons = 5;
     
     self.view.backgroundColor = [UIColor greenColor];
     
+    CGSize margin = CGSizeMake(40.0, 15.0);
+
+    int x = margin.width;
+    for (int i=0; i<kNumberOfButtons; i++)
+    {
+        [xPositions addObject:[NSNumber numberWithInt:x]];
+        x += self.view.frame.size.width + margin.width;
+        
+
+    }
     
     //UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
    // self.navigationItem.leftBarButtonItem = popoverItem;
     
     
-    OBDragDropManager *dragDropManager = [OBDragDropManager sharedManager];
+    dragDropManager = [OBDragDropManager sharedManager];
     
     CGRect viewFrame = self.view.frame;
     CGRect frame = CGRectMake(0, viewFrame.size.height-407, viewFrame.size.width+400, 150);
@@ -84,7 +94,11 @@ static NSInteger kNumberOfButtons = 5;
     bottomView = [[UIScrollView alloc] initWithFrame:frame];
   //  bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleRightMargin;
     bottomView.backgroundColor = [UIColor blueColor];
-    bottomView.dropZoneHandler=self;
+    bottomView.clipsToBounds = NO;
+    bottomView.scrollEnabled = YES;
+    //bottomView.pagingEnabled = YES;
+
+   // bottomView.dropZoneHandler=self;
     
     
     frame = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height-150);
@@ -107,9 +121,6 @@ static NSInteger kNumberOfButtons = 5;
         [bottomViewContents addObject:itemView];
         [bottomView addSubview:itemView];
         
-        // Drag drop with long press gesture
-        //UIGestureRecognizer *recognizer = [dragDropManager createLongPressDragDropGestureRecognizerWithSource:self];
-        // Drag drop with pan gesture
         UIGestureRecognizer *recognizer = [dragDropManager createDragDropGestureRecognizerWithClass:[UIPanGestureRecognizer class] source:self];
         [itemView addGestureRecognizer:recognizer];
     }
@@ -123,7 +134,6 @@ static NSInteger kNumberOfButtons = 5;
 {
     [super viewDidUnload];
     
-    additionalSourcesViewController = nil;
 }
 
 
@@ -153,7 +163,7 @@ static NSInteger kNumberOfButtons = 5;
 
 -(void) viewDidLayoutSubviews
 {
-    [self layoutScrollView:bottomView withContents:bottomViewContents];
+   // [self layoutScrollView:bottomView withContents:bottomViewContents];
   //  [self layoutScrollView:rightView withContents:rightViewContents];
 }
 
@@ -182,14 +192,27 @@ static NSInteger kNumberOfButtons = 5;
 {
     OBOvum *ovum = [[OBOvum alloc] init];
     ovum.dataObject = [NSNumber numberWithInteger:sourceView.tag];
+    ovum.dragView.frame = sourceView.frame;
     return ovum;
 }
 
 
 -(UIView *) createDragRepresentationOfSourceView:(UIView *)sourceView inWindow:(UIWindow*)window
 {
-    NSLog(@"Create drag representation in view %@",sourceView);
-    //sourceView.hidden=YES;
+    
+    if([bottomViewContents containsObject:sourceView]){
+        currentDragIndex= [bottomViewContents indexOfObject:sourceView];
+    }
+    else if ([topViewContents containsObject:sourceView])
+    {
+        currentDragIndex = [topViewContents indexOfObject:sourceView];
+        sourceView.hidden=YES;
+    }
+    
+    CGPoint locationInHostWindow = sourceView.frame.origin;
+    NSArray *subviews = sourceView.subviews;
+    NSLog(@"Create drag representation at location %@",NSStringFromCGPoint(locationInHostWindow));
+
     CGRect frame = [sourceView convertRect:sourceView.bounds toView:sourceView.window];
     frame = [window convertRect:frame fromWindow:sourceView.window];
     
@@ -200,12 +223,15 @@ static NSInteger kNumberOfButtons = 5;
     dragView.layer.borderWidth = 1.0;
     dragView.alpha=0.9;
     dragView.layer.masksToBounds = YES;
+    
+
     return dragView;
 }
 
 
 -(void) dragViewWillAppear:(UIView *)dragView inWindow:(UIWindow*)window atLocation:(CGPoint)location
 {
+    NSLog(@"drag view will appear");
     /*
     CGRect original = dragView.frame;
     dragView.transform = CGAffineTransformIdentity;
@@ -235,9 +261,9 @@ static NSInteger kLabelTag = 2323;
 {
     NSLog(@"Ovum<0x%x> %@ Entered", (int)ovum, ovum.dataObject);
     
-    CGFloat red = 0.33 + 0.66 * location.y / self.view.frame.size.height;
-    view.layer.borderColor = [UIColor colorWithRed:red green:0.0 blue:0.0 alpha:1.0].CGColor;
-    view.layer.borderWidth = 5.0;
+    //CGFloat red = 0.33 + 0.66 * location.y / self.view.frame.size.height;
+    view.layer.borderColor = [UIColor blueColor].CGColor;
+    view.layer.borderWidth = 2.0;
     
     CGRect labelFrame = CGRectMake(ovum.dragView.bounds.origin.x, ovum.dragView.bounds.origin.y, ovum.dragView.bounds.size.width, ovum.dragView.bounds.size.height / 2);
     UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
@@ -299,7 +325,11 @@ static NSInteger kLabelTag = 2323;
 -(void) ovumDropped:(OBOvum*)ovum inView:(UIView*)view atLocation:(CGPoint)location
 {
     NSLog(@"Ovum<0x%x> %@ Dropped. In view: %@. At Location: %@", (int)ovum, ovum.dataObject,view, NSStringFromCGPoint(location));
-//    view.hidden=NO;
+    view.hidden=NO;
+    
+    NSLog(@"Ovum tag is :%@",ovum.tag);
+    
+    ovum.dragView.hidden=NO;
 
     view.layer.borderColor = [UIColor clearColor].CGColor;
     view.layer.borderWidth = 0.0;
@@ -309,26 +339,59 @@ static NSInteger kLabelTag = 2323;
     
     
     UIView *itemView = [self.view viewWithTag:[ovum.dataObject integerValue]];
+    
+    
+    
     NSInteger insertionIndex = [self insertionIndexForLocation:location withContents:topViewContents];
-
+    
     if (itemView)
     {
         if(location.y<600) //Dropped in top view
         {
-        //[itemView removeFromSuperview];
-        [bottomViewContents removeObject:itemView];
-        
-        [topView insertSubview:itemView atIndex:insertionIndex];
-        [topViewContents insertObject:itemView atIndex:insertionIndex];
+            [itemView removeFromSuperview];
+            NSLog(@"index of item view: %i",currentDragIndex);
+            [bottomViewContents removeObject:itemView];
+            
+            [topView insertSubview:itemView atIndex:insertionIndex];
+            [topViewContents insertObject:itemView atIndex:insertionIndex];
+            
+            if(bottomViewContents.count<20){
+            UIView *itemView2 = [self createItemView: currentDragIndex];
+            [bottomViewContents insertObject:itemView2 atIndex:currentDragIndex];
+
+            [bottomView insertSubview:itemView2 atIndex:currentDragIndex];
+
+            
+            UIGestureRecognizer *recognizer = [dragDropManager createDragDropGestureRecognizerWithClass:[UIPanGestureRecognizer class] source:self];
+            [itemView2 addGestureRecognizer:recognizer];
+            }
+
+            /*
+            UIView *itemView = [self createItemView: index];
+            [bottomViewContents addObject:itemView];
+            [bottomView addSubview:itemView];
+            
+            // Drag drop with long press gesture
+            //UIGestureRecognizer *recognizer = [dragDropManager createLongPressDragDropGestureRecognizerWithSource:self];
+            // Drag drop with pan gesture
+            UIGestureRecognizer *recognizer = [dragDropManager createDragDropGestureRecognizerWithClass:[UIPanGestureRecognizer class] source:self];
+            [itemView addGestureRecognizer:recognizer];*/
         }
         else  //dropped in bottom view
         {
+            if([topViewContents containsObject:itemView]){
             [itemView removeFromSuperview];
             [topViewContents removeObject:itemView];
-            [bottomView insertSubview:itemView atIndex:insertionIndex];
-            [bottomViewContents insertObject:itemView atIndex:insertionIndex];
-
-
+            }
+            else
+            {
+               
+            }
+            
+            //[bottomView insertSubview:itemView atIndex:insertionIndex];
+           // [bottomViewContents insertObject:itemView atIndex:insertionIndex];
+            
+            
         }
         
     }
@@ -337,11 +400,9 @@ static NSInteger kLabelTag = 2323;
 
 -(void) handleDropAnimationForOvum:(OBOvum*)ovum withDragView:(UIView*)dragView dragDropManager:(OBDragDropManager*)dragDropManager
 {
-    UIView *itemView = nil;
-    if ([ovum.dataObject isKindOfClass:[NSNumber class]])
-        itemView = [self.view viewWithTag:[ovum.dataObject integerValue]];
-    else if ([ovum.dataObject isKindOfClass:[UIColor class]])
-        itemView = [topViewContents lastObject];
+    NSLog(@"Called handleDropAnimationForOvum");
+    UIView *itemView =[self.view viewWithTag:[ovum.dataObject integerValue]];
+    itemView.hidden=NO;
     
     if (itemView)
     {
@@ -351,11 +412,16 @@ static NSInteger kLabelTag = 2323;
         itemView.frame = dragViewFrameInTargetWindow;
         
         CGRect viewFrame = [ovum.dragView.window convertRect:itemView.frame fromView:itemView.superview];
+       // dragView.frame = viewFrame;
+       // itemView.frame = CGRectMake([xPositions[currentDragIndex] intValue], 120, itemView.frame.size.width, itemView.frame.size.height);
+      //  CGRect frame = CGRectMake(x, margin.height, view.frame.size.width, view.frame.size.height);
+        //view.frame = frame;
+        dragView.frame = viewFrame;
         
+        [self layoutScrollView:bottomView withContents:bottomViewContents];
+
+
         void (^animation)() = ^{
-            dragView.frame = viewFrame;
-            
-            [self layoutScrollView:bottomView withContents:bottomViewContents];
             //[self layoutScrollView:rightView withContents:rightViewContents];
         };
         
@@ -368,7 +434,7 @@ static NSInteger kLabelTag = 2323;
 
 
 
-
+/*
 
 -(IBAction) showMoreItems:(id)sender
 {
@@ -407,5 +473,5 @@ static NSInteger kLabelTag = 2323;
         sourcesPopoverController = nil;
     }
 }
-
+*/
 @end
