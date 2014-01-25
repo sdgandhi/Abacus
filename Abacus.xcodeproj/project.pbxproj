@@ -19,6 +19,12 @@
 		DC02ABA3189379E1004DA6E0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC02AB8B189379E1004DA6E0 /* UIKit.framework */; };
 		DC02ABAB189379E1004DA6E0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DC02ABA9189379E1004DA6E0 /* InfoPlist.strings */; };
 		DC02ABAD189379E1004DA6E0 /* AbacusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABAC189379E1004DA6E0 /* AbacusTests.m */; };
+		DC02ABC11893827A004DA6E0 /* OBDragDropManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABB91893827A004DA6E0 /* OBDragDropManager.m */; };
+		DC02ABC21893827A004DA6E0 /* OBLongPressDragDropGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABBC1893827A004DA6E0 /* OBLongPressDragDropGestureRecognizer.m */; };
+		DC02ABC31893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABBE1893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.m */; };
+		DC02ABC41893827A004DA6E0 /* UIView+OBDropZone.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABC01893827A004DA6E0 /* UIView+OBDropZone.m */; };
+		DC02ABC71893836F004DA6E0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABC61893836F004DA6E0 /* ViewController.m */; };
+		DC02ABCA18938424004DA6E0 /* AdditionalSourcesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC02ABC918938424004DA6E0 /* AdditionalSourcesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +54,20 @@
 		DC02ABA8189379E1004DA6E0 /* AbacusTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AbacusTests-Info.plist"; sourceTree = "<group>"; };
 		DC02ABAA189379E1004DA6E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DC02ABAC189379E1004DA6E0 /* AbacusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbacusTests.m; sourceTree = "<group>"; };
+		DC02ABB71893827A004DA6E0 /* OBDragDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBDragDrop.h; sourceTree = "<group>"; };
+		DC02ABB81893827A004DA6E0 /* OBDragDropManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBDragDropManager.h; sourceTree = "<group>"; };
+		DC02ABB91893827A004DA6E0 /* OBDragDropManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBDragDropManager.m; sourceTree = "<group>"; };
+		DC02ABBA1893827A004DA6E0 /* OBDragDropProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBDragDropProtocol.h; sourceTree = "<group>"; };
+		DC02ABBB1893827A004DA6E0 /* OBLongPressDragDropGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBLongPressDragDropGestureRecognizer.h; sourceTree = "<group>"; };
+		DC02ABBC1893827A004DA6E0 /* OBLongPressDragDropGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBLongPressDragDropGestureRecognizer.m; sourceTree = "<group>"; };
+		DC02ABBD1893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+OBDragDrop.h"; sourceTree = "<group>"; };
+		DC02ABBE1893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+OBDragDrop.m"; sourceTree = "<group>"; };
+		DC02ABBF1893827A004DA6E0 /* UIView+OBDropZone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OBDropZone.h"; sourceTree = "<group>"; };
+		DC02ABC01893827A004DA6E0 /* UIView+OBDropZone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OBDropZone.m"; sourceTree = "<group>"; };
+		DC02ABC51893836F004DA6E0 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		DC02ABC61893836F004DA6E0 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		DC02ABC818938424004DA6E0 /* AdditionalSourcesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdditionalSourcesViewController.h; path = ../../OBDragDrop/OBDragDropTest/OBDragDropTest/AdditionalSourcesViewController.h; sourceTree = "<group>"; };
+		DC02ABC918938424004DA6E0 /* AdditionalSourcesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdditionalSourcesViewController.m; path = ../../OBDragDrop/OBDragDropTest/OBDragDropTest/AdditionalSourcesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +97,7 @@
 		DC02AB7B189379E1004DA6E0 = {
 			isa = PBXGroup;
 			children = (
+				DC02ABB61893827A004DA6E0 /* Classes */,
 				DC02AB8D189379E1004DA6E0 /* Abacus */,
 				DC02ABA6189379E1004DA6E0 /* AbacusTests */,
 				DC02AB86189379E1004DA6E0 /* Frameworks */,
@@ -108,6 +129,10 @@
 			isa = PBXGroup;
 			children = (
 				DC02AB96189379E1004DA6E0 /* AppDelegate.h */,
+				DC02ABC51893836F004DA6E0 /* ViewController.h */,
+				DC02ABC818938424004DA6E0 /* AdditionalSourcesViewController.h */,
+				DC02ABC918938424004DA6E0 /* AdditionalSourcesViewController.m */,
+				DC02ABC61893836F004DA6E0 /* ViewController.m */,
 				DC02AB97189379E1004DA6E0 /* AppDelegate.m */,
 				DC02AB99189379E1004DA6E0 /* Images.xcassets */,
 				DC02AB8E189379E1004DA6E0 /* Supporting Files */,
@@ -142,6 +167,24 @@
 				DC02ABA9189379E1004DA6E0 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DC02ABB61893827A004DA6E0 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				DC02ABB71893827A004DA6E0 /* OBDragDrop.h */,
+				DC02ABB81893827A004DA6E0 /* OBDragDropManager.h */,
+				DC02ABB91893827A004DA6E0 /* OBDragDropManager.m */,
+				DC02ABBA1893827A004DA6E0 /* OBDragDropProtocol.h */,
+				DC02ABBB1893827A004DA6E0 /* OBLongPressDragDropGestureRecognizer.h */,
+				DC02ABBC1893827A004DA6E0 /* OBLongPressDragDropGestureRecognizer.m */,
+				DC02ABBD1893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.h */,
+				DC02ABBE1893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.m */,
+				DC02ABBF1893827A004DA6E0 /* UIView+OBDropZone.h */,
+				DC02ABC01893827A004DA6E0 /* UIView+OBDropZone.m */,
+			);
+			name = Classes;
+			path = Abacus/Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,7 +282,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC02ABCA18938424004DA6E0 /* AdditionalSourcesViewController.m in Sources */,
+				DC02ABC71893836F004DA6E0 /* ViewController.m in Sources */,
+				DC02ABC31893827A004DA6E0 /* UIGestureRecognizer+OBDragDrop.m in Sources */,
+				DC02ABC11893827A004DA6E0 /* OBDragDropManager.m in Sources */,
+				DC02ABC21893827A004DA6E0 /* OBLongPressDragDropGestureRecognizer.m in Sources */,
 				DC02AB98189379E1004DA6E0 /* AppDelegate.m in Sources */,
+				DC02ABC41893827A004DA6E0 /* UIView+OBDropZone.m in Sources */,
 				DC02AB94189379E1004DA6E0 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

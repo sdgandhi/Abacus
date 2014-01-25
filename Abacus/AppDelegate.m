@@ -7,15 +7,24 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
+#import "OBDragDrop.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    
+    self.viewController = [[ViewController alloc] initWithNibName:nil bundle:nil];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+    self.window.rootViewController = navController;
     [self.window makeKeyAndVisible];
+    
+    OBDragDropManager *manager = [OBDragDropManager sharedManager];
+    [manager prepareOverlayWindowUsingMainWindow:self.window];
+    
     return YES;
 }
 
