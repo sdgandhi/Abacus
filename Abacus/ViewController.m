@@ -30,7 +30,7 @@ static NSInteger kNumberOfButtons = 20;
     NSLog(@"bottom view bounds bounds: %@",NSStringFromCGRect(contentBounds));
 
     
-    CGSize margin = CGSizeMake(40.0, 15.0);
+    CGSize margin = CGSizeMake(50.0, 15.0);
    // CGFloat itemWidth = bounds.size.width - 2 * margin.width;
   //  CGFloat itemHeight = itemWidth * 9 / 16.0;
     CGFloat x = margin.width;
@@ -46,19 +46,92 @@ static NSInteger kNumberOfButtons = 20;
         NSLog(@"Content bounds: %@", NSStringFromCGRect(contentBounds));
     }
     
-   // scrollView.contentSize = contentBounds.size;
+    scrollView.contentSize = contentBounds.size;
 }
 
 
 -(UIView *) createItemView : (int)indexOfView
 {
     static CGFloat (^randFloat)(CGFloat, CGFloat) = ^(CGFloat min, CGFloat max) { return min + (max-min) * (CGFloat)random() / RAND_MAX; };
-    UIView *itemView = [[UIView alloc] initWithFrame:CGRectMake(0, [xPositions[indexOfView] intValue], 120, 120)];
+    UIView *itemView = [[UIView alloc] initWithFrame:CGRectMake(0, [xPositions[indexOfView] intValue], 180, 120)];
     itemView.backgroundColor = [UIColor colorWithHue:randFloat(0.0, 1.0) saturation:randFloat(0.5, 1.0) brightness:randFloat(0.3, 1.0) alpha:1.0];
     itemView.tag = kItemViewIndex++;
+    
+    UIView *linkView = [[UIView alloc]initWithFrame:CGRectMake(itemView.frame.size.width-44, 38, 44, 44)];
+    linkView.backgroundColor= [UIColor brownColor];
+    
+    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(recognizeLinkDrag:)];
+    
+    [linkView addGestureRecognizer:recognizer];
+    
+    [itemView addSubview:linkView];
+    
+    
     return itemView;
 }
 
+-(IBAction)recognizeLinkDrag:(UIPanGestureRecognizer *)recognizer
+{
+    UIView *senderView =recognizer.view ;
+                          
+    CGPoint location = [senderView.superview convertPoint:senderView.frame.origin toView:[UIApplication sharedApplication].keyWindow.rootViewController.view];
+    
+    CGPoint translation = [recognizer translationInView:senderView];
+    CGPoint position = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+  //  [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
+
+
+    NSLog(@"senderview location is %@",NSStringFromCGPoint(location));
+                          
+  /*  if(recognizer.state == UIGestureRecognizerStateBegan)
+    {//start drawing line
+        NSLog(@"Gesture began");
+       // UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(itemView.frame.size.width-22, 60, 1, 1)];
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path moveToPoint:CGPointMake(location.x+senderView.frame.size.width-22, location.y+22)];
+        [path addLineToPoint:CGPointMake(100.0, 100.0)];
+        [currentDragLine removeFromSuperlayer];
+        currentDragLine = [CAShapeLayer layer];
+
+        currentDragLine.path = [path CGPath];
+        currentDragLine.strokeColor = [[UIColor blueColor] CGColor];
+        currentDragLine.lineWidth = 3.0;
+        currentDragLine.fillColor = [[UIColor clearColor] CGColor];
+        
+        [self.view.layer addSublayer:currentDragLine];
+
+        
+    }*/
+    if(recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        NSLog(@"Gesture ended");
+    }
+    else
+    {
+        [currentDragLine removeFromSuperlayer];
+
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        CGPoint pointOne = CGPointMake(location.x+senderView.frame.size.width-22, location.y+22);
+        CGPoint pointTwo = CGPointMake(pointOne.x +translation.x, pointOne.y +translation.y);
+        NSLog(@"Point one : %@",NSStringFromCGPoint(pointOne));
+        NSLog(@"Point two : %@",NSStringFromCGPoint(pointTwo));
+        
+        [path moveToPoint:pointOne];
+        [path addLineToPoint:pointTwo];
+        currentDragLine = [CAShapeLayer layer];
+        
+        currentDragLine.path = [path CGPath];
+        currentDragLine.strokeColor = [[UIColor blueColor] CGColor];
+        currentDragLine.lineWidth = 3.0;
+        currentDragLine.fillColor = [[UIColor clearColor] CGColor];
+        
+        [self.view.layer addSublayer:currentDragLine];
+
+    }
+    //NSLog(@"Recognized link drag!");
+    
+    
+}
 
 
 #pragma mark - View lifecycle
@@ -69,8 +142,9 @@ static NSInteger kNumberOfButtons = 20;
 	// Do any additional setup after loading the view, typically from a nib.
     
     self.view.backgroundColor = [UIColor greenColor];
-    
-    CGSize margin = CGSizeMake(40.0, 15.0);
+    currentDragLine = [CAShapeLayer layer];
+
+    CGSize margin = CGSizeMake(50.0, 15.0);
 
     int x = margin.width;
     for (int i=0; i<kNumberOfButtons; i++)

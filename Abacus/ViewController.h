@@ -21,6 +21,8 @@
     
     NSMutableArray *xPositions;
     int currentDragIndex;
+    
+    CAShapeLayer *currentDragLine;
 }
 
 @end
