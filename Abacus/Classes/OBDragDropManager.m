@@ -91,6 +91,15 @@
     
     
 }
+-(NSString *)getLabel
+{
+    NSArray* array = self.mainView.subviews;
+    
+    UILabel *labelview = array[2];
+    NSLog(@"label view is %@",labelview);
+    return labelview.text;
+}
+
 -(int)getIndexOfOvum
 {
     UIView* view =  self.mainView.subviews[0];
@@ -129,27 +138,11 @@
 
 }
 
--(void)setLineToOutput:(CAShapeLayer *)newLine
-{
-    NSLog(@"new line is %@",newLine);
-    
-    lineToOutput = newLine;
-    
-}
-
--(CAShapeLayer *)getLineToOutput
-{
-    
-    return lineToOutput;
-}
-
 -(void)deleteOvum
 {
     OBDragDropManager *manager = [OBDragDropManager sharedManager];
-    
+    self.outputLine=nil;
     [manager cleanupOvum:self];
-    
-    
     
 }
 @end
@@ -697,6 +690,19 @@
 }
 
 #pragma mark - Ovum External Updates
+
+-(OBOvum *)getOvumWithTag:(int)tag
+{
+    
+    for(OBOvum * ovum in self.ovumList)
+    {
+        if((int)ovum.dataObject == tag)
+        {
+            return ovum;
+        }
+    }
+    return nil;
+}
 
 
 -(void) updateOvum:(OBOvum *)ovum withZoom:(CGFloat)zoom

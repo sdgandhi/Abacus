@@ -97,20 +97,26 @@ static NSInteger kNumberOfButtons = 20;
     nameLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:35];
     nameLabel.textColor = [UIColor whiteColor];
     nameLabel.textAlignment = NSTextAlignmentCenter;
-    nameLabel.lineBreakMode =NSLineBreakByWordWrapping;
+    nameLabel.lineBreakMode =NSLineBreakByTruncatingTail;
     nameLabel.adjustsFontSizeToFitWidth=YES;
     nameLabel.numberOfLines=2;
     
     if(indexOfView==0)
-        nameLabel.text=@"Y! Finance";
+        nameLabel.text=@"VAL";
     if(indexOfView==1)
-        nameLabel.text=@"MAX";
+        nameLabel.text=@"OP";
     if(indexOfView==2)
-        nameLabel.text=@"MIN";
+        nameLabel.text=@"MAX";
     if(indexOfView==3)
-        nameLabel.text=@"AVG";
+        nameLabel.text=@"MIN";
     if(indexOfView==4)
+        nameLabel.text=@"AVG";
+    if(indexOfView==5)
         nameLabel.text=@"EXTRACT";
+    if(indexOfView==6)
+        nameLabel.text=@"Y! $$";
+    if(indexOfView==7)
+        nameLabel.text=@"RANGE";
 
 
 
@@ -213,9 +219,19 @@ static NSInteger kNumberOfButtons = 20;
             inputterOvum.outputLine = dragLine;
             NSLog(@"recognizer line2: %@",inputterOvum.outputLine);
 
-            [self.view.layer addSublayer:inputterOvum.outputLine];
+            [self.view.layer addSublayer:dragLine];
+            
+            if (inputterOvum.output.count>0) {
+                
+                OBOvum *outputOvum = inputterOvum.output[0];
+                
+                if(outputOvum.input.count>1)
+                {
+                    NSLog(@"Test");
+                    [self updateOvumValue:outputOvum];
+                }
 
-
+            }
             
             
         }
@@ -228,7 +244,7 @@ static NSInteger kNumberOfButtons = 20;
         
         [path moveToPoint:pointOne];
         [path addLineToPoint:pointTwo];
-        currentDragLine = [CAShapeLayer layer];
+     currentDragLine = [CAShapeLayer layer];
         
         currentDragLine.path = [path CGPath];
         currentDragLine.strokeColor = [[UIColor blueColor] CGColor];
@@ -344,6 +360,7 @@ static NSInteger kNumberOfButtons = 20;
     bottomView.backgroundColor = [UIColor lightGrayColor];
     bottomView.clipsToBounds = NO;
     bottomView.scrollEnabled = YES;
+    bottomView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"bottom_wood_texture.png"]];
     //bottomView.pagingEnabled = YES;
 
    // bottomView.dropZoneHandler=self;
@@ -358,19 +375,40 @@ static NSInteger kNumberOfButtons = 20;
     
     // GO BUTTON!
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.backgroundColor=[UIColor blueColor];
+
     [button addTarget:self
                action:@selector(cloudBoost)
      forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Go" forState:UIControlStateNormal];
-    button.frame = CGRectMake(80, 80, 40, 40);
+    button.tintColor= [UIColor whiteColor];
+    [button setTitle:@"GO!" forState:UIControlStateNormal];
+    button.frame = CGRectMake(15, 25, 65, 65);
+    button.titleLabel.font =  [UIFont fontWithName:@"AvenirNext-Medium" size:20];
+    button.layer.cornerRadius = 8.0;
+
     [topView addSubview:button];
+    
+    
     //UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
     // self.navigationItem.leftBarButtonItem = popoverItem;
 
-    
+    UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    clearButton.backgroundColor=[UIColor redColor];
+    [clearButton addTarget:self
+               action:@selector(clearTop)
+     forControlEvents:UIControlEventTouchUpInside];
+    clearButton.tintColor= [UIColor whiteColor];
+    clearButton.titleLabel.font =  [UIFont fontWithName:@"AvenirNext-Medium" size:20];
+    clearButton.layer.cornerRadius = 8.0;
+
+    [clearButton setTitle:@"Clear" forState:UIControlStateNormal];
+    clearButton.frame = CGRectMake(95, 25, 65, 65);
+    [topView addSubview:clearButton];
+
     
     [self.view addSubview:topView];
     [self.view addSubview:bottomView];
+    NSLog(@"Bottom view size is :%@", NSStringFromCGRect(bottomView.frame));
 
     topView.dropZoneHandler = self;
     
@@ -467,16 +505,29 @@ static NSInteger kNumberOfButtons = 20;
     newOvum.mainView= sourceView;
     
     if([newOvum getIndexOfOvum] == 0){
-        [newOvum setType:@"yahoo-finance"];
+        [newOvum setType:@"val"];
     } else if ([newOvum getIndexOfOvum] == 1){
-        [newOvum setType:@"max"];
+        [newOvum setType:@"op"];
     } else if ([newOvum getIndexOfOvum] == 2){
-        [newOvum setType:@"min"];
+        [newOvum setType:@"max"];
     } else if ([newOvum getIndexOfOvum] == 3){
-        [newOvum setType:@"avg"];
+        [newOvum setType:@"min"];
     } else if ([newOvum getIndexOfOvum] == 4){
+        [newOvum setType:@"avg"];
+    }
+    else if ([newOvum getIndexOfOvum] == 5){
         [newOvum setType:@"extract"];
         [newOvum setValues:[NSMutableArray arrayWithObjects:@"High", nil]];
+
+    }
+    else if ([newOvum getIndexOfOvum] == 6)
+    {
+        [newOvum setType:@"yahoo-finance"];
+
+    }
+    else if([newOvum getIndexOfOvum] == 7)
+    {
+        [newOvum setType:@"range"];
     }
     
     NSLog(@"new ovum mainview : %@", newOvum.mainView);
@@ -572,20 +623,8 @@ static NSInteger kLabelTag = 2323;
 {
     NSLog(@"Ovum<0x%x> %@ Entered. # %i", (int)ovum, ovum.dataObject, ovum.getIndexOfOvum);
     
-    //CGFloat red = 0.33 + 0.66 * location.y / self.view.frame.size.height;
-    view.layer.borderColor = [UIColor blueColor].CGColor;
-    view.layer.borderWidth = 2.0;
-    
-    CGRect labelFrame = CGRectMake(ovum.dragView.bounds.origin.x, ovum.dragView.bounds.origin.y, ovum.dragView.bounds.size.width, ovum.dragView.bounds.size.height / 2);
-    UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
-    //label.text = @"Ovum entered";
-    label.tag = kLabelTag;
-    label.backgroundColor = [UIColor clearColor];
-    label.opaque = NO;
-    label.font = [UIFont boldSystemFontOfSize:24.0];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor whiteColor];
-    //[ovum.dragView addSubview:label];
+ 
+        //[ovum.dragView addSubview:label];
     
     return OBDropActionMove;
 }
@@ -650,30 +689,34 @@ static NSInteger kLabelTag = 2323;
 
 -(void)clearTop
 {
-    for (int i=0; i<self.view.layer.sublayers.count; i++) {
+    if(dragDropManager.ovumList.count>0){
+        
+        NSArray *ovums = [NSArray arrayWithArray:dragDropManager.ovumList];
+        currentDragLine=nil;
+
+    for (int i=0; i<=self.view.layer.sublayers.count; i++) {
         if(i>1){
             CALayer *layer = self.view.layer.sublayers[i];
             
             [layer removeFromSuperlayer];}}
 
-    [UIView animateWithDuration:0.4 animations:^{
-        for(OBOvum *ovum in dragDropManager.ovumList)
+        
+        for(OBOvum *ovum in ovums)
         {
             [ovum deleteOvum];
             NSLog(@"Ovum<0x%x> %@ Exited", (int)ovum, ovum.dataObject);
             
             topView.layer.borderColor = [UIColor clearColor].CGColor;
             topView.layer.borderWidth = 0.0;
-            UIView *itemView = ovum.dragView;
-            [UIView animateWithDuration:0.25 animations:^{
-                itemView.alpha=0.5;
-                itemView.frame = CGRectInset(itemView.frame, itemView.frame.size.width-40, itemView.frame.size.height-40);
+            UIView *itemView = ovum.mainView;
+           //     itemView.alpha=0.5;
+             //   itemView.frame = CGRectInset(itemView.frame, itemView.frame.size.width-40, itemView.frame.size.height-40);
                 
-            }completion:^(BOOL finished) {
                 
                 OBDragDropManager *manager = [OBDragDropManager sharedManager];
                 NSLog(@"pre remove ovumlist: %@",manager.ovumList);
                 [manager.ovumList removeObject:ovum];
+            
                 if([topViewContents containsObject:itemView]){
                     [[itemView subviews]
                      makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -682,12 +725,12 @@ static NSInteger kLabelTag = 2323;
                     
                 }
                 
-            }];
+            
             
             
         }
-    }];
 
+    }
 
 }
 
@@ -718,10 +761,6 @@ static NSInteger kLabelTag = 2323;
 
     }];
     
-
-    
-    //UILabel *label = (UILabel*) [ovum.dragView viewWithTag:kLabelTag];
-    //[label removeFromSuperview];
 }
 
 -(void) ovumDropped:(OBOvum*)ovum inView:(UIView*)view atLocation:(CGPoint)location
@@ -736,8 +775,6 @@ static NSInteger kLabelTag = 2323;
     view.layer.borderColor = [UIColor clearColor].CGColor;
     view.layer.borderWidth = 0.0;
     
-    UILabel *label = (UILabel*) [ovum.dragView viewWithTag:kLabelTag];
-    [label removeFromSuperview];
     
     
     UIView *itemView = [self.view viewWithTag:[ovum.dataObject integerValue]];
@@ -768,10 +805,12 @@ static NSInteger kLabelTag = 2323;
                 
                 UIGestureRecognizer *recognizer = [dragDropManager createDragDropGestureRecognizerWithClass:[UIPanGestureRecognizer class] source:self];
                 [itemView2 addGestureRecognizer:recognizer];
-            //    if([ovum.type isEqualToString:@"val"])
-             //   {
-               //     [self editOvumText:ovum];
-                //}
+                if([ovum.type isEqualToString:@"val"] || [ovum.type isEqualToString:@"op"])
+               {
+                   [ovum setLabel:@""];
+
+                    [self editOvumText:ovum];
+                }
                 
             }
             
@@ -807,28 +846,193 @@ static NSInteger kLabelTag = 2323;
         
     }
 }
-/*
+
 -(void)editOvumText:(OBOvum *)ovum
 {
     NSLog(@"Called editOvumText on %@",ovum);
+    CGRect frame = ovum.mainView.frame;
   //  CGRect frame = [ovum.mainView convertRect:ovum.mainView.bounds toView:ovum.mainView.window];
     //frame = [window convertRect:frame fromWindow:ovum.mainView.window];
-
-    UITextField *textField = [[UITextField alloc] initWithFrame:ovum.mainView.frame];
-    textField.borderStyle = UITextBorderStyleRoundedRect;
-    textField.font = [UIFont systemFontOfSize:15];
+  //  frame = [topView.window convertRect:frame fromWindow:ovum.mainView.window];
+    CGRect newRect = CGRectMake(20, 0, frame.size.width-20, frame.size.height/2);
+    UITextField *textField = [[UITextField alloc] initWithFrame:newRect];
+    textField.borderStyle = UITextBorderStyleNone;
+    textField.font =  [UIFont fontWithName:@"AvenirNext-Medium" size:20];
+    textField.textColor = [UIColor whiteColor];
     textField.placeholder = @"";
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    textField.keyboardType = UIKeyboardTypeNumberPad;
+    textField.keyboardType = UIKeyboardTypeDecimalPad;
     textField.returnKeyType = UIReturnKeyDone;
     textField.backgroundColor= [UIColor clearColor];
-    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.delegate = self;
+    textField.tag=(int)ovum.dataObject;
     [ovum.mainView addSubview:textField];
-    [textField becomeFirstResponder];
     
-}*/
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    OBOvum *ovum = [dragDropManager getOvumWithTag:textField.tag];
+    [ovum setLabel:@""];
+
+    if (![ovum.type isEqualToString:@"val"]) { //its an operator
+        
+        ovum.type=textField.text;
+        
+        if(ovum.input.count<2)
+        {
+            [ovum setLabel:textField.text];
+        }
+        else
+        {
+            [self updateOvumValue:ovum];
+            
+            
+        }
+    }
+    else{ //its a value
+        ovum.values = [[NSMutableArray alloc]initWithObjects:textField.text, nil];
+        [ovum setLabel:textField.text];
+        
+        if (ovum.output.count>0) {
+
+        OBOvum *outputOvum = ovum.output[0];
+
+            if(outputOvum.input.count>1)
+            {
+                NSLog(@"Test");
+                [self updateOvumValue:outputOvum];
+            }
+            
+            
+        }
+
+    }
+    
+    
+    textField.text=@"";
+
+    return YES;
+}
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    OBOvum *ovum = [dragDropManager getOvumWithTag:textField.tag];
+
+    if (![ovum.type isEqualToString:@"val"]) {
+        textField.text = @"";
+    }
+    else
+    {
+    textField.text = [ovum getLabel];
+    }
+    [ovum setLabel:@""];
+
+}
+-(void)updateOvumValue:(OBOvum *)ovum
+{
+    if([ovum.type isEqualToString: @"+"])
+    {
+        float value = 0;
+        
+        for (OBOvum *ovumInputs in ovum.input)
+        {
+            value += [ovumInputs.values[0] floatValue];
+        }
+        
+        ovum.values = [[NSMutableArray alloc]initWithObjects:[NSString stringWithFormat:@"%f",value], nil];
+        
+        [ovum setLabel:[NSString stringWithFormat:@"%g",value]];
+
+        
+    }
+    else if([ovum.type isEqualToString: @"*"])
+    {
+        float value = 1;
+        
+        for (OBOvum *ovumInputs in ovum.input)
+        {
+            value =value * [ovumInputs.values[0] floatValue];
+        }
+        
+        ovum.values = [[NSMutableArray alloc]initWithObjects:[NSString stringWithFormat:@"%f",value], nil];
+        
+        [ovum setLabel:[NSString stringWithFormat:@"%g",value]];
+
+    }
+    else if([ovum.type isEqualToString: @"/"])
+    {
+        
+            OBOvum *dividend = ovum.input[0];
+        OBOvum *divisor = ovum.input[1];
+
+        float value = [dividend.values[0] floatValue] / [divisor.values[0] floatValue];
+        
+        ovum.values = [[NSMutableArray alloc]initWithObjects:[NSString stringWithFormat:@"%f",value], nil];
+        
+        [ovum setLabel:[NSString stringWithFormat:@"%g",value]];
+        
+    }
+    else if([ovum.type isEqualToString: @"-"])
+    {
+        OBOvum *dividend = ovum.input[0];
+        OBOvum *divisor = ovum.input[1];
+        
+        float value = [dividend.values[0] floatValue] - [divisor.values[0] floatValue];
+        
+        ovum.values = [[NSMutableArray alloc]initWithObjects:[NSString stringWithFormat:@"%f",value], nil];
+        
+        [ovum setLabel:[NSString stringWithFormat:@"%g",value]];
+
+    }
+    else if([ovum.type isEqualToString: @"^"])
+    {
+        OBOvum *dividend = ovum.input[0];
+        OBOvum *divisor = ovum.input[1];
+        
+        float value = pow([dividend.values[0] floatValue], [divisor.values[0] floatValue]);
+        
+        ovum.values = [[NSMutableArray alloc]initWithObjects:[NSString stringWithFormat:@"%f",value], nil];
+        
+        [ovum setLabel:[NSString stringWithFormat:@"%g",value]];
+
+        
+    }
+    else if([ovum.type isEqualToString: @"%"])
+    {
+        OBOvum *dividend = ovum.input[0];
+        OBOvum *divisor = ovum.input[1];
+        
+        float value =  [dividend.values[0] integerValue] % [divisor.values[0] integerValue];
+        
+        ovum.values = [[NSMutableArray alloc]initWithObjects:[NSString stringWithFormat:@"%f",value], nil];
+        
+        [ovum setLabel:[NSString stringWithFormat:@"%g",value]];
+        
+        
+    }
+    else if ([ovum.type isEqualToString:@"range"])
+    {
+        OBOvum *min = ovum.input[0];
+        OBOvum *max = ovum.input[1];
+
+        float rem =[max.values[0] floatValue] - [min.values[0] floatValue];
+        
+        ovum.values = [[NSMutableArray alloc]init];
+        
+        for (int i =0; i< (int)rem; i++)
+        {
+            [ovum.values addObject:[NSString stringWithFormat:@"%i",i]];
+        }
+    //    [ovum setLabel:[NSString stringWithFormat:@"%@",ovum.values]];
+        NSLog(@"Range is %@",ovum.values);
+
+        
+    }
+
+    
+}
 
 -(void) handleDropAnimationForOvum:(OBOvum*)ovum withDragView:(UIView*)dragView dragDropManager:(OBDragDropManager*)dragDropManager
 {
@@ -842,6 +1046,8 @@ static NSInteger kLabelTag = 2323;
     {
         // Set the initial position of the view to match that of the drag view
         CGRect dragViewFrameInTargetWindow = [ovum.dragView.window convertRect:dragView.frame toWindow:topView.window];
+        
+        
         dragViewFrameInTargetWindow = [topView convertRect:dragViewFrameInTargetWindow fromView:topView.window];
         itemView.frame = dragViewFrameInTargetWindow;
         

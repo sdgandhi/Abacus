@@ -35,7 +35,6 @@
   
   UIView *dragView; // View to represent the dragged object
   CGPoint dragViewInitialCenter;
-  CAShapeLayer *lineToOutput;
   BOOL isCentered;
   BOOL shouldScale;
 }
@@ -52,7 +51,6 @@
 @property (nonatomic, assign) BOOL shouldScale;
 
 
-
 @property (nonatomic, strong)UIView *mainView;
 
 // node properties
@@ -60,7 +58,7 @@
 @property (nonatomic, strong) NSMutableArray *values;
 @property (nonatomic, strong) NSMutableArray *input;
 @property (nonatomic, strong) NSMutableArray *output;
-@property (nonatomic,strong) CAShapeLayer *outputLine;
+@property (nonatomic,weak) CAShapeLayer *outputLine;
 
 
 
@@ -76,9 +74,8 @@
 -(void)addInputNode:(OBOvum *)newOutputNode;
 -(void)deleteOvum;
 
-
 -(void)testMethod;
-
+-(NSString *)getLabel;
 -(int)getIndexOfOvum;
 
 -(void)setLabel:(NSString *)label;
@@ -118,6 +115,6 @@
 
 -(void) updateOvum:(OBOvum *)ovum withZoom:(CGFloat)zoom;
 -(void)cleanupOvum:(OBOvum *)ovum;
-
+-(OBOvum *)getOvumWithTag:(int)tag;
 @end
 

@@ -10,9 +10,10 @@
 #import "OBDragDrop.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
+#include <math.h>
 
 
-@interface ViewController : UIViewController <OBOvumSource, OBDropZone, UIPopoverControllerDelegate, NSURLConnectionDelegate>
+@interface ViewController : UIViewController <OBOvumSource, OBDropZone, UIPopoverControllerDelegate, NSURLConnectionDelegate, UITextFieldDelegate>
 {
     NSMutableData *_responseData;
     UIScrollView *bottomView;
