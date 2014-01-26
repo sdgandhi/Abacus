@@ -702,9 +702,11 @@ static NSInteger kLabelTag = 2323;
         NSArray *ovums = [NSArray arrayWithArray:dragDropManager.ovumList];
         currentDragLine=nil;
 
-    for (int i=0; i<=self.view.layer.sublayers.count; i++) {
+        NSArray* sublayers = [NSArray arrayWithArray:self.view.layer.sublayers];
+
+    for (int i=0; i<sublayers.count; i++) {
         if(i>1){
-            CALayer *layer = self.view.layer.sublayers[i];
+            CALayer *layer = sublayers[i];
             
             [layer removeFromSuperlayer];}}
 
@@ -739,7 +741,9 @@ static NSInteger kLabelTag = 2323;
         }
 
     }
+    [topView setNeedsDisplay];
 
+    [self.view setNeedsDisplay];
 }
 
 
