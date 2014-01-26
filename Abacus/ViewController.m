@@ -426,10 +426,12 @@ static NSInteger kNumberOfButtons = 20;
         [newOvum setType:@"yahoo-finance"];
     } else if ([newOvum getIndexOfOvum] == 1){
         [newOvum setType:@"max"];
-    } else if ([newOvum getIndexOfOvum] == 1){
+    } else if ([newOvum getIndexOfOvum] == 2){
         [newOvum setType:@"min"];
-    } else if ([newOvum getIndexOfOvum] == 1){
+    } else if ([newOvum getIndexOfOvum] == 3){
         [newOvum setType:@"avg"];
+    } else if ([newOvum getIndexOfOvum] == 4){
+        [newOvum setType:@"extract"];
     }
     
     NSLog(@"new ovum mainview : %@", newOvum.mainView);
