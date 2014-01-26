@@ -77,11 +77,19 @@ static NSInteger kNumberOfButtons = 20;
     itemView.layer.borderColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha].CGColor;
     itemView.tag = kItemViewIndex++;
     
-    UIView *linkView = [[UIView alloc]initWithFrame:CGRectMake(itemView.frame.size.width-44, 38, 44, 44)];
+    UIView *linkView = [[UIView alloc]initWithFrame:CGRectMake(itemView.frame.size.width-44, itemView.frame.size.height-44, 44, 44)];
     
     [linkView.layer setCornerRadius:3.0];
     linkView.backgroundColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha];
 
+    UIView *inputView = [[UIView alloc]initWithFrame:CGRectMake(0, itemView.frame.size.height-44, 44, 44)];
+    
+    [inputView.layer setCornerRadius:3.0];
+    inputView.backgroundColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha];
+    [itemView addSubview:inputView];
+
+    
+    
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(recognizeLinkDrag:)];
     linkView.tag =indexOfView;
     [linkView addGestureRecognizer:recognizer];
@@ -158,7 +166,7 @@ static NSInteger kNumberOfButtons = 20;
             NSLog(@"New input nodes for output: %@",droppedInOvum.input);
              location = [droppedInOvum.mainView.superview convertPoint:droppedInOvum.mainView.frame.origin toView:[UIApplication sharedApplication].keyWindow.rootViewController.view];
 
-             pointTwo = CGPointMake(location.x+25, location.y+droppedInOvum.mainView.frame.size.height/2);
+             pointTwo = CGPointMake(location.x+22, location.y+droppedInOvum.mainView.frame.size.height-22);
 
             UIView *outputView = droppedInOvum.mainView;
             UIView *outputSubview = [outputView subviews][0];
@@ -536,22 +544,28 @@ static NSInteger kLabelTag = 2323;
 {
      NSLog(@"Ovum<0x%x> %@ Moved. In view %@", (int)ovum, ovum.dataObject, view);
     
-    //NSMutableArray *inputNodes =
+    NSMutableArray *inputNodes = ovum.input;
+    NSMutableArray *outputNodes = ovum.output;
     
-    
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    
-   // [path moveToPoint:pointOne];
-    //[path addLineToPoint:pointTwo];
-    currentDragLine = [CAShapeLayer layer];
-    
-    currentDragLine.path = [path CGPath];
-    currentDragLine.strokeColor = [[UIColor blueColor] CGColor];
-    currentDragLine.lineWidth = 3.0;
-    currentDragLine.fillColor = [[UIColor clearColor] CGColor];
-    
-    [self.view.layer addSublayer:currentDragLine];
+    for(OBOvum * ovumLoop in inputNodes)
+    {
+        
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        
+        // [path moveToPoint:pointOne];
+        //[path addLineToPoint:pointTwo];
+        currentDragLine = [CAShapeLayer layer];
+        
+        currentDragLine.path = [path CGPath];
+        currentDragLine.strokeColor = [[UIColor blueColor] CGColor];
+        currentDragLine.lineWidth = 3.0;
+        currentDragLine.fillColor = [[UIColor clearColor] CGColor];
+        
+        [self.view.layer addSublayer:currentDragLine];
 
+        
+    }
+    
     
     
    // CGFloat hiphopopotamus = 0.33 + 0.66 * location.y / self.view.frame.size.height;
