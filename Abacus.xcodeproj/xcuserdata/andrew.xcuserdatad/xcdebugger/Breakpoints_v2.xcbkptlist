@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Abacus/ViewController.m"
-            timestampString = "412399201.990781"
+            timestampString = "412402246.758037"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "-recognizeLinkDrag:"
             landmarkType = "5">
          </BreakpointContent>

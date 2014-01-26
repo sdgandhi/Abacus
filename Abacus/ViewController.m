@@ -68,8 +68,6 @@ static NSInteger kNumberOfButtons = 20;
     
     itemView.backgroundColor = colorArray[indexOfView];
     
-<<<<<<< HEAD
-=======
     [itemView.layer setCornerRadius:8];
     [itemView.layer setBorderWidth:5.0];
     CGFloat hue;
@@ -79,7 +77,6 @@ static NSInteger kNumberOfButtons = 20;
     [itemView.backgroundColor getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
     itemView.layer.borderColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha].CGColor;
 
->>>>>>> 5a7d58519b785a36d1021a0c5756591526818889
     itemView.tag = kItemViewIndex++;
     
     UIView *linkView = [[UIView alloc]initWithFrame:CGRectMake(itemView.frame.size.width-44, 38, 44, 44)];
@@ -109,15 +106,13 @@ static NSInteger kNumberOfButtons = 20;
         if (ovum.mainView == senderMainView)
         {
             inputterOvum = ovum;
-
-
         }
     }
         
     CGPoint location = [senderView.superview convertPoint:senderView.frame.origin toView:[UIApplication sharedApplication].keyWindow.rootViewController.view];
     
     CGPoint translation = [recognizer translationInView:senderView];
-    CGPoint position = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+   // CGPoint position = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
   //  [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
     CGPoint pointOne = CGPointMake(location.x+senderView.frame.size.width-22, location.y+22);
     CGPoint pointTwo = CGPointMake(pointOne.x +translation.x, pointOne.y +translation.y);
@@ -152,8 +147,9 @@ static NSInteger kNumberOfButtons = 20;
     {
         NSLog(@"Gesture ended");
         OBOvum *droppedInOvum = [self findDroppedInOvum:pointTwo];
+        BOOL alreadyConnected = [inputterOvum.output containsObject:droppedInOvum];
 
-        if(droppedInOvum)
+        if(droppedInOvum && droppedInOvum!=inputterOvum && !alreadyConnected)
         {
             NSLog(@"Found ovum: %@. Inputter is: %@",droppedInOvum, inputterOvum);
             
@@ -163,8 +159,10 @@ static NSInteger kNumberOfButtons = 20;
             
             [droppedInOvum addInputNode:inputterOvum];
             NSLog(@"New input nodes for output: %@",droppedInOvum.input);
+             location = [droppedInOvum.mainView.superview convertPoint:droppedInOvum.mainView.frame.origin toView:[UIApplication sharedApplication].keyWindow.rootViewController.view];
 
-            
+             pointTwo = CGPointMake(location.x+25, location.y+droppedInOvum.mainView.frame.size.height/2);
+
             UIView *outputView = droppedInOvum.mainView;
             UIView *outputSubview = [outputView subviews][0];
             NSLog(@"outputSubview: %@",outputSubview);
@@ -173,18 +171,17 @@ static NSInteger kNumberOfButtons = 20;
             UIBezierPath *path = [UIBezierPath bezierPath];
             
             [path moveToPoint:pointOne];
-            [path addLineToPoint:outputTarget];
-           currentDragLine = [CAShapeLayer layer];
+            [path addLineToPoint:pointTwo];
+           CAShapeLayer* dragLine= [CAShapeLayer layer];
             
-            currentDragLine.path = [path CGPath];
-            currentDragLine.strokeColor = [[UIColor blueColor] CGColor];
-            currentDragLine.lineWidth = 3.0;
-            currentDragLine.fillColor = [[UIColor clearColor] CGColor];
-            NSLog(@"recognizer line2: %@",inputterOvum.outputLine);
+            dragLine.path = [path CGPath];
+            dragLine.strokeColor = [[UIColor blueColor] CGColor];
+            dragLine.lineWidth = 3.0;
+            dragLine.fillColor = [[UIColor clearColor] CGColor];
 
             
             
-            inputterOvum.outputLine = currentDragLine;
+            inputterOvum.outputLine = dragLine;
             NSLog(@"recognizer line2: %@",inputterOvum.outputLine);
 
             [self.view.layer addSublayer:inputterOvum.outputLine];
@@ -364,7 +361,7 @@ static NSInteger kNumberOfButtons = 20;
     NSLog(@"new ovum mainview : %@", newOvum.mainView);
     NSLog(@"Couldn't find old ovum, creating new");
 
-    [newOvum testMethod];
+ //   [newOvum testMethod];
     return newOvum;
 }
 
@@ -382,7 +379,7 @@ static NSInteger kNumberOfButtons = 20;
     }
     
     CGPoint locationInHostWindow = sourceView.frame.origin;
-    NSArray *subviews = sourceView.subviews;
+    //NSArray *subviews = sourceView.subviews;
     NSLog(@"Create drag representation at location %@",NSStringFromCGPoint(locationInHostWindow));
 
     CGRect frame = [sourceView convertRect:sourceView.bounds toView:sourceView.window];
@@ -467,7 +464,7 @@ static NSInteger kLabelTag = 2323;
     label.font = [UIFont boldSystemFontOfSize:24.0];
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
-    [ovum.dragView addSubview:label];
+    //[ovum.dragView addSubview:label];
     
     return OBDropActionMove;
 }
@@ -571,16 +568,22 @@ static NSInteger kLabelTag = 2323;
             [topViewContents insertObject:itemView atIndex:insertionIndex];
             
             if(bottomViewContents.count<20){
-            UIView *itemView2 = [self createItemView: currentDragIndex];
-            [bottomViewContents insertObject:itemView2 atIndex:currentDragIndex];
-
-            [bottomView insertSubview:itemView2 atIndex:currentDragIndex];
-
-            
-            UIGestureRecognizer *recognizer = [dragDropManager createDragDropGestureRecognizerWithClass:[UIPanGestureRecognizer class] source:self];
-            [itemView2 addGestureRecognizer:recognizer];
+                NSLog(@"triggered");
+                UIView *itemView2 = [self createItemView: currentDragIndex];
+                [bottomViewContents insertObject:itemView2 atIndex:currentDragIndex];
+                
+                [bottomView insertSubview:itemView2 atIndex:currentDragIndex];
+                
+                
+                UIGestureRecognizer *recognizer = [dragDropManager createDragDropGestureRecognizerWithClass:[UIPanGestureRecognizer class] source:self];
+                [itemView2 addGestureRecognizer:recognizer];
+            //    if([ovum.type isEqualToString:@"val"])
+             //   {
+               //     [self editOvumText:ovum];
+                //}
+                
             }
-
+            
             /*
             UIView *itemView = [self createItemView: index];
             [bottomViewContents addObject:itemView];
@@ -613,7 +616,28 @@ static NSInteger kLabelTag = 2323;
         
     }
 }
+/*
+-(void)editOvumText:(OBOvum *)ovum
+{
+    NSLog(@"Called editOvumText on %@",ovum);
+  //  CGRect frame = [ovum.mainView convertRect:ovum.mainView.bounds toView:ovum.mainView.window];
+    //frame = [window convertRect:frame fromWindow:ovum.mainView.window];
 
+    UITextField *textField = [[UITextField alloc] initWithFrame:ovum.mainView.frame];
+    textField.borderStyle = UITextBorderStyleRoundedRect;
+    textField.font = [UIFont systemFontOfSize:15];
+    textField.placeholder = @"";
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.keyboardType = UIKeyboardTypeNumberPad;
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.backgroundColor= [UIColor clearColor];
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    textField.delegate = self;
+    [ovum.mainView addSubview:textField];
+    [textField becomeFirstResponder];
+    
+}*/
 
 -(void) handleDropAnimationForOvum:(OBOvum*)ovum withDragView:(UIView*)dragView dragDropManager:(OBDragDropManager*)dragDropManager
 {

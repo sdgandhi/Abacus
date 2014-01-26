@@ -28,9 +28,9 @@
     OBOvum *ovum1 = [[OBOvum alloc] initWithType:@"add"];
     OBOvum *ovum2 = [[OBOvum alloc] initWithType:@"val"];
     OBOvum *ovum3 = [[OBOvum alloc] initWithType:@"val"];
-    [ovum2 setInput: [NSArray arrayWithObjects:@5, nil]];
-    [ovum3 setInput: [NSArray arrayWithObjects:@10, nil]];
-    [ovum1 setInput: [NSArray arrayWithObjects:ovum2,ovum3, nil]];
+    [ovum2 setInput: [NSMutableArray arrayWithObjects:@5, nil]];
+    [ovum3 setInput: [NSMutableArray arrayWithObjects:@10, nil]];
+    [ovum1 setInput: [NSMutableArray arrayWithObjects:ovum2,ovum3, nil]];
     NSArray *ovums = [[NSArray alloc] initWithObjects:ovum1, ovum2, ovum3, nil];
     NSLog(@"JSON output \n\n%@",[ovums[0] toJSON]);
     NSString *jsonRequest = [ovums[0] toJSON];

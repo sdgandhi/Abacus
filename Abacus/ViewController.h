@@ -12,7 +12,7 @@
 #import "ViewController.h"
 
 
-@interface ViewController : UIViewController <OBOvumSource, OBDropZone, UIPopoverControllerDelegate>
+@interface ViewController : UIViewController <OBOvumSource, OBDropZone, UIPopoverControllerDelegate,UITextFieldDelegate, UITextViewDelegate>
 {
     UIScrollView *bottomView;
     NSMutableArray *bottomViewContents;
