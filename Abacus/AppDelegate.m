@@ -25,6 +25,7 @@
     OBDragDropManager *manager = [OBDragDropManager sharedManager];
     [manager prepareOverlayWindowUsingMainWindow:self.window];
     
+    /*
     OBOvum *ovum1 = [[OBOvum alloc] initWithType:@"add"];
     OBOvum *ovum2 = [[OBOvum alloc] initWithType:@"val"];
     OBOvum *ovum3 = [[OBOvum alloc] initWithType:@"val"];
@@ -47,7 +48,7 @@
     [request setHTTPBody: requestData];
     
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
-    
+    */
     return YES;
 }
 
