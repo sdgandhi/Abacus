@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "OBDragDropProtocol.h"
 #import "OBLongPressDragDropGestureRecognizer.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 // NSNotifications that gets broadcasted when a drag and drop has started or ended
@@ -34,7 +35,7 @@
   
   UIView *dragView; // View to represent the dragged object
   CGPoint dragViewInitialCenter;
-  
+  CAShapeLayer *lineToOutput;
   BOOL isCentered;
   BOOL shouldScale;
 }
@@ -51,6 +52,7 @@
 @property (nonatomic, assign) BOOL shouldScale;
 
 
+
 @property (nonatomic, strong)UIView *mainView;
 
 // node properties
@@ -58,6 +60,7 @@
 @property (nonatomic, strong) NSMutableArray *values;
 @property (nonatomic, strong) NSMutableArray *input;
 @property (nonatomic, strong) NSMutableArray *output;
+@property (nonatomic,strong) CAShapeLayer *outputLine;
 
 
 
@@ -72,6 +75,8 @@
 
 -(void)addInputNode:(OBOvum *)newOutputNode;
 
+
+-(void)testMethod;
 
 @end
 

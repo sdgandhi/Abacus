@@ -68,8 +68,6 @@ static NSInteger kNumberOfButtons = 20;
     
     itemView.backgroundColor = colorArray[indexOfView];
     
-    
-    
     itemView.tag = kItemViewIndex++;
     
     UIView *linkView = [[UIView alloc]initWithFrame:CGRectMake(itemView.frame.size.width-44, 38, 44, 44)];
@@ -88,7 +86,20 @@ static NSInteger kNumberOfButtons = 20;
 -(IBAction)recognizeLinkDrag:(UIPanGestureRecognizer *)recognizer
 {
     UIView *senderView =recognizer.view ;
-                          
+    UIView *senderMainView =recognizer.view.superview;
+
+    OBOvum *inputterOvum;
+
+    for(OBOvum *ovum in dragDropManager.ovumList)
+    {
+        if (ovum.mainView == senderMainView)
+        {
+            inputterOvum = ovum;
+
+
+        }
+    }
+        
     CGPoint location = [senderView.superview convertPoint:senderView.frame.origin toView:[UIApplication sharedApplication].keyWindow.rootViewController.view];
     
     CGPoint translation = [recognizer translationInView:senderView];
@@ -121,21 +132,57 @@ static NSInteger kNumberOfButtons = 20;
 
         
     }*/
+    [currentDragLine removeFromSuperlayer];
+
     if(recognizer.state == UIGestureRecognizerStateEnded)
     {
         NSLog(@"Gesture ended");
         OBOvum *droppedInOvum = [self findDroppedInOvum:pointTwo];
+
         if(droppedInOvum)
         {
-            NSLog(@"Found ovum: %@",droppedInOvum);
-            [recognizer.ovum addOutputNode:droppedInOvum];
-            [droppedInOvum addInputNode:recognizer.ovum];
+            NSLog(@"Found ovum: %@. Inputter is: %@",droppedInOvum, inputterOvum);
+            
+            [inputterOvum addOutputNode:droppedInOvum];
+            NSLog(@"New output nodes for inputter: %@",inputterOvum.output);
+            
+            
+            [droppedInOvum addInputNode:inputterOvum];
+            NSLog(@"New input nodes for output: %@",droppedInOvum.input);
+
+            
+            UIView *outputView = droppedInOvum.mainView;
+            UIView *outputSubview = [outputView subviews][0];
+            NSLog(@"outputSubview: %@",outputSubview);
+            CGPoint outputTarget = outputSubview.center;
+
+            UIBezierPath *path = [UIBezierPath bezierPath];
+            
+            [path moveToPoint:pointOne];
+            [path addLineToPoint:outputTarget];
+           currentDragLine = [CAShapeLayer layer];
+            
+            currentDragLine.path = [path CGPath];
+            currentDragLine.strokeColor = [[UIColor blueColor] CGColor];
+            currentDragLine.lineWidth = 3.0;
+            currentDragLine.fillColor = [[UIColor clearColor] CGColor];
+            NSLog(@"recognizer line2: %@",inputterOvum.outputLine);
+
+            
+            
+            inputterOvum.outputLine = currentDragLine;
+            NSLog(@"recognizer line2: %@",inputterOvum.outputLine);
+
+            [self.view.layer addSublayer:inputterOvum.outputLine];
+
+
+            
+            
         }
     
     }
     else
     {
-        [currentDragLine removeFromSuperlayer];
 
         UIBezierPath *path = [UIBezierPath bezierPath];
         
@@ -303,6 +350,7 @@ static NSInteger kNumberOfButtons = 20;
     NSLog(@"new ovum mainview : %@", newOvum.mainView);
     NSLog(@"Couldn't find old ovum, creating new");
 
+    [newOvum testMethod];
     return newOvum;
 }
 
@@ -449,7 +497,7 @@ static NSInteger kLabelTag = 2323;
     view.layer.borderColor = [UIColor clearColor].CGColor;
     view.layer.borderWidth = 0.0;
     UIView *itemView = ovum.dragView;
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.25 animations:^{
         itemView.alpha=0.5;
         itemView.frame = CGRectInset(itemView.frame, itemView.frame.size.width-40, itemView.frame.size.height-40);
 

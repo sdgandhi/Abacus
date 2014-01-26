@@ -19,7 +19,6 @@
 @synthesize tag;
 @synthesize dropAction;
 @synthesize currentDropHandlingView;
-
 @synthesize dragView;
 @synthesize dragViewInitialCenter;
 
@@ -29,7 +28,6 @@
 @synthesize offsetOvumAndTouch;
 @synthesize shiftPinchCentroid;
 @synthesize scale;
-
 @synthesize input;
 @synthesize type;
 @synthesize values;
@@ -40,6 +38,11 @@
     if (self) {
         self.isCentered = YES;
         self.shouldScale = NO;
+        
+        self.outputLine = [CAShapeLayer layer];
+        
+        self.input = [[NSMutableArray alloc]init];
+        self.output = [[NSMutableArray alloc]init];
         OBDragDropManager *manager = [OBDragDropManager sharedManager];
       //  NSLog(@"ovum list pre: %@",manager.ovumList);
         [manager.ovumList addObject:self];
@@ -65,6 +68,10 @@
     
     
     return self;
+}
+-(void)testMethod
+{
+    NSLog(@"@@@@@Called test method");
 }
 
 -(void) dealloc
@@ -101,9 +108,24 @@
 
 -(void)addInputNode:(OBOvum *)newInputNode
 {
-    [self.output addObject:newInputNode];
+    [self.input addObject:newInputNode];
 
 }
+
+-(void)setLineToOutput:(CAShapeLayer *)newLine
+{
+    NSLog(@"new line is %@",newLine);
+    
+    lineToOutput = newLine;
+    
+}
+
+-(CAShapeLayer *)getLineToOutput
+{
+    
+    return lineToOutput;
+}
+
 
 @end
 
@@ -576,7 +598,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:OBDragDropManagerDidEndDragNotification object:self userInfo:userInfo];
         
         // Reset the ovum recognizer
-        recognizer.ovum = nil;
+        //recognizer.ovum = nil;
     }
     else if (recognizer.state == UIGestureRecognizerStateCancelled ||
              recognizer.state == UIGestureRecognizerStateEnded)
@@ -598,7 +620,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:OBDragDropManagerDidEndDragNotification object:self userInfo:userInfo];
         
         // Reset the ovum recognizer
-        recognizer.ovum = nil;
+        //recognizer.ovum = nil;
     }
 }
 

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "OBDragDrop.h"
+#import <QuartzCore/QuartzCore.h>
+#import "ViewController.h"
+
 
 @interface ViewController : UIViewController <OBOvumSource, OBDropZone, UIPopoverControllerDelegate>
 {
