@@ -320,7 +320,7 @@ static NSInteger kNumberOfButtons = 8;
     //NSLog(@"result is: %@", results[0]);
     //[self getOvumHead].values[0] = results[0];
     NSLog(@"result is: %@", a);
-    [self getOvumHead].values[0] = a;
+    [self getOvumHead].values = [NSMutableArray arrayWithObject:a];
     NSLog(@"ovum head value is %@",   [self getOvumHead].values[0]);
     OBOvum *ovum = [self getOvumHead];
     [self updateOvumValue:ovum];
@@ -650,7 +650,7 @@ static NSInteger kLabelTag = 2323;
 
 -(OBDropAction) ovumMoved:(OBOvum*)ovum inView:(UIView*)view atLocation:(CGPoint)location
 {
-     NSLog(@"Ovum<0x%x> %@ Moved. In view %@", (int)ovum, ovum.dataObject, view);
+    // NSLog(@"Ovum<0x%x> %@ Moved. In view %@", (int)ovum, ovum.dataObject, view);
     /*
     NSMutableArray *inputNodes = ovum.input;
     NSMutableArray *outputNodes = [NSMutableArray arrayWithArray:ovum.output];
