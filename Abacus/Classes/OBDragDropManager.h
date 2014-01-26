@@ -80,6 +80,8 @@
 
 -(int)getIndexOfOvum;
 
+-(void)setLabel:(NSString *)label;
+
 @end
 
 

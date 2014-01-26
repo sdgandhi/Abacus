@@ -81,7 +81,15 @@
 
     
 }
+-(void)setLabel:(NSString *)label
+{
+    NSArray* array = self.mainView.subviews;
 
+    UILabel *labelview = array[2];
+    labelview.text=label;
+    
+    
+}
 -(int)getIndexOfOvum
 {
     UIView* view =  self.mainView.subviews[0];
@@ -680,6 +688,7 @@
 }
 
 #pragma mark - Ovum External Updates
+
 
 -(void) updateOvum:(OBOvum *)ovum withZoom:(CGFloat)zoom
 {

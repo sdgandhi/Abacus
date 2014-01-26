@@ -82,20 +82,30 @@ static NSInteger kNumberOfButtons = 20;
     
     [linkView.layer setCornerRadius:3.0];
     linkView.backgroundColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha];
+    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(recognizeLinkDrag:)];
+    linkView.tag =indexOfView;
+    [linkView addGestureRecognizer:recognizer];
+    
+    [itemView addSubview:linkView];
 
     UIView *inputView = [[UIView alloc]initWithFrame:CGRectMake(0, itemView.frame.size.height-44, 44, 44)];
     
     [inputView.layer setCornerRadius:3.0];
     inputView.backgroundColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha];
     [itemView addSubview:inputView];
+    
+    UILabel *nameLabel =[[UILabel alloc]initWithFrame:CGRectMake(10, 10, itemView.frame.size.width-20, itemView.frame.size.height-54)];
+    nameLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:35];
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.text=@"test fdsajkfhdkjshafkdjhfsakljdhfjkasd";
+    nameLabel.textAlignment = NSTextAlignmentCenter;
+    nameLabel.lineBreakMode =NSLineBreakByWordWrapping;
+    nameLabel.adjustsFontSizeToFitWidth=YES;
+    nameLabel.numberOfLines=2;
+    [itemView addSubview:nameLabel];
 
     
     
-    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(recognizeLinkDrag:)];
-    linkView.tag =indexOfView;
-    [linkView addGestureRecognizer:recognizer];
-    
-    [itemView addSubview:linkView];
 
     return itemView;
 }
@@ -305,19 +315,19 @@ static NSInteger kNumberOfButtons = 20;
     {
         [xPositions addObject:[NSNumber numberWithInt:x]];
         x += self.view.frame.size.width + margin.width;
-        
 
     }
     
     
     // GO BUTTON!
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.backgroundColor = [UIColor redColor];
     [button addTarget:self
                action:@selector(cloudBoost)
      forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Go" forState:UIControlStateNormal];
     button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
-    [self.view addSubview:button];
+    [topView addSubview:button];
     
     //UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
    // self.navigationItem.leftBarButtonItem = popoverItem;
