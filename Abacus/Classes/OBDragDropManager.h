@@ -79,6 +79,7 @@
 -(int)getIndexOfOvum;
 
 -(void)setLabel:(NSString *)label;
+-(void)setTypeLabel:(NSString *)label;
 
 @end
 

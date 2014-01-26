@@ -100,29 +100,37 @@ static NSInteger kNumberOfButtons = 20;
     nameLabel.lineBreakMode =NSLineBreakByTruncatingTail;
     nameLabel.adjustsFontSizeToFitWidth=YES;
     nameLabel.numberOfLines=2;
-    
-    if(indexOfView==0)
-        nameLabel.text=@"VAL";
-    if(indexOfView==1)
-        nameLabel.text=@"OP";
-    if(indexOfView==2)
-        nameLabel.text=@"MAX";
-    if(indexOfView==3)
-        nameLabel.text=@"MIN";
-    if(indexOfView==4)
-        nameLabel.text=@"AVG";
-    if(indexOfView==5)
-        nameLabel.text=@"EXTRACT";
-    if(indexOfView==6)
-        nameLabel.text=@"Y! $$";
-    if(indexOfView==7)
-        nameLabel.text=@"RANGE";
-
-
-
-    
-    
     [itemView addSubview:nameLabel];
+
+    
+     UILabel *typeLabel=[[UILabel alloc]initWithFrame:CGRectMake(46, itemView.frame.size.height-44, itemView.frame.size.width-92, 44)];
+    typeLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:20];
+    typeLabel.textColor = [UIColor whiteColor];
+    typeLabel.textAlignment = NSTextAlignmentCenter;
+    typeLabel.lineBreakMode =NSLineBreakByTruncatingTail;
+    typeLabel.adjustsFontSizeToFitWidth=YES;
+    typeLabel.numberOfLines=2;
+
+    typeLabel.adjustsFontSizeToFitWidth=YES;
+    if(indexOfView==0)
+        typeLabel.text=@"VAL";
+    if(indexOfView==1)
+        typeLabel.text=@"OP";
+    if(indexOfView==2)
+        typeLabel.text=@"MAX";
+    if(indexOfView==3)
+        typeLabel.text=@"MIN";
+    if(indexOfView==4)
+        typeLabel.text=@"AVG";
+    if(indexOfView==5)
+        typeLabel.text=@"EXTRACT";
+    if(indexOfView==6)
+        typeLabel.text=@"Y! $$";
+    if(indexOfView==7)
+        typeLabel.text=@"RANGE";
+
+    [itemView addSubview:typeLabel];
+
 
     
     
@@ -883,7 +891,7 @@ static NSInteger kLabelTag = 2323;
         
         if(ovum.input.count<2)
         {
-            [ovum setLabel:textField.text];
+            [ovum setTypeLabel:textField.text];
         }
         else
         {
@@ -1030,6 +1038,7 @@ static NSInteger kLabelTag = 2323;
 
         
     }
+    
 
     
 }

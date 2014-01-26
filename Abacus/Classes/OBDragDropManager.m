@@ -91,6 +91,16 @@
     
     
 }
+-(void)setTypeLabel:(NSString *)label
+{
+    NSArray* array = self.mainView.subviews;
+    
+    UILabel *labelview = array[3];
+    NSLog(@"label view is %@",labelview);
+    labelview.text=label;
+    
+    
+}
 -(NSString *)getLabel
 {
     NSArray* array = self.mainView.subviews;
