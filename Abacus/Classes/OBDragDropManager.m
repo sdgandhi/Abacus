@@ -66,12 +66,11 @@
         
     }
     
-    
     return self;
 }
 -(void)testMethod
 {
-    NSLog(@"@@@@@Called test method");
+    NSLog(@"@@@@@ Called test method");
 }
 
 -(void) dealloc
@@ -81,6 +80,12 @@
     [manager.ovumList removeObject:self];
 
     
+}
+
+-(int)getIndexOfOvum
+{
+    UIView* view =  self.mainView.subviews[0];
+    return view.tag;
 }
 
 -(NSString*) toJSON

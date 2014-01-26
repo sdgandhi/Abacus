@@ -83,7 +83,7 @@ static NSInteger kNumberOfButtons = 20;
     linkView.backgroundColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha];
 
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(recognizeLinkDrag:)];
-    
+    linkView.tag =indexOfView;
     [linkView addGestureRecognizer:recognizer];
     
     [itemView addSubview:linkView];
@@ -343,6 +343,7 @@ static NSInteger kNumberOfButtons = 20;
         
         UIGestureRecognizer *recognizer = [dragDropManager createDragDropGestureRecognizerWithClass:[UIPanGestureRecognizer class] source:self];
         [itemView addGestureRecognizer:recognizer];
+        
     }
     
     [self layoutScrollView:bottomView withContents:bottomViewContents];
@@ -511,7 +512,7 @@ static NSInteger kLabelTag = 2323;
 
 -(OBDropAction) ovumEntered:(OBOvum*)ovum inView:(UIView*)view atLocation:(CGPoint)location
 {
-    NSLog(@"Ovum<0x%x> %@ Entered", (int)ovum, ovum.dataObject);
+    NSLog(@"Ovum<0x%x> %@ Entered. # %i", (int)ovum, ovum.dataObject, ovum.getIndexOfOvum);
     
     //CGFloat red = 0.33 + 0.66 * location.y / self.view.frame.size.height;
     view.layer.borderColor = [UIColor blueColor].CGColor;
@@ -533,7 +534,25 @@ static NSInteger kLabelTag = 2323;
 
 -(OBDropAction) ovumMoved:(OBOvum*)ovum inView:(UIView*)view atLocation:(CGPoint)location
 {
-   //  NSLog(@"Ovum<0x%x> %@ Moved. In view %@", (int)ovum, ovum.dataObject, view);
+     NSLog(@"Ovum<0x%x> %@ Moved. In view %@", (int)ovum, ovum.dataObject, view);
+    
+    //NSMutableArray *inputNodes =
+    
+    
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    
+   // [path moveToPoint:pointOne];
+    //[path addLineToPoint:pointTwo];
+    currentDragLine = [CAShapeLayer layer];
+    
+    currentDragLine.path = [path CGPath];
+    currentDragLine.strokeColor = [[UIColor blueColor] CGColor];
+    currentDragLine.lineWidth = 3.0;
+    currentDragLine.fillColor = [[UIColor clearColor] CGColor];
+    
+    [self.view.layer addSublayer:currentDragLine];
+
+    
     
    // CGFloat hiphopopotamus = 0.33 + 0.66 * location.y / self.view.frame.size.height;
     
