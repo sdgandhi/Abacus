@@ -86,6 +86,7 @@
     NSArray* array = self.mainView.subviews;
 
     UILabel *labelview = array[2];
+    NSLog(@"label view is %@",labelview);
     labelview.text=label;
     
     
@@ -139,7 +140,15 @@
     return lineToOutput;
 }
 
-
+-(void)deleteOvum
+{
+    OBDragDropManager *manager = [OBDragDropManager sharedManager];
+    
+    [manager cleanupOvum:self];
+    
+    
+    
+}
 @end
 
 

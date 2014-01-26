@@ -74,6 +74,7 @@
 -(void)addOutputNode:(OBOvum *)newOutputNode;
 
 -(void)addInputNode:(OBOvum *)newOutputNode;
+-(void)deleteOvum;
 
 
 -(void)testMethod;
@@ -116,7 +117,7 @@
 -(void) animateOvumDrop:(OBOvum*)ovum withAnimation:(void (^)()) dropAnimation completion:(void (^)(BOOL completed))completion;
 
 -(void) updateOvum:(OBOvum *)ovum withZoom:(CGFloat)zoom;
-
+-(void)cleanupOvum:(OBOvum *)ovum;
 
 @end
 

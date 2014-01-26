@@ -96,11 +96,26 @@ static NSInteger kNumberOfButtons = 20;
     UILabel *nameLabel =[[UILabel alloc]initWithFrame:CGRectMake(10, 10, itemView.frame.size.width-20, itemView.frame.size.height-54)];
     nameLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:35];
     nameLabel.textColor = [UIColor whiteColor];
-    nameLabel.text=@"test fdsajkfhdkjshafkdjhfsakljdhfjkasd";
     nameLabel.textAlignment = NSTextAlignmentCenter;
     nameLabel.lineBreakMode =NSLineBreakByWordWrapping;
     nameLabel.adjustsFontSizeToFitWidth=YES;
     nameLabel.numberOfLines=2;
+    
+    if(indexOfView==0)
+        nameLabel.text=@"Y! Finance";
+    if(indexOfView==1)
+        nameLabel.text=@"MAX";
+    if(indexOfView==2)
+        nameLabel.text=@"MIN";
+    if(indexOfView==3)
+        nameLabel.text=@"AVG";
+    if(indexOfView==4)
+        nameLabel.text=@"EXTRACT";
+
+
+
+    
+    
     [itemView addSubview:nameLabel];
 
     
@@ -194,7 +209,6 @@ static NSInteger kNumberOfButtons = 20;
             dragLine.lineWidth = 3.0;
             dragLine.fillColor = [[UIColor clearColor] CGColor];
 
-            
             
             inputterOvum.outputLine = dragLine;
             NSLog(@"recognizer line2: %@",inputterOvum.outputLine);
@@ -317,18 +331,7 @@ static NSInteger kNumberOfButtons = 20;
     }
     
     
-    // GO BUTTON!
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.backgroundColor = [UIColor redColor];
-    [button addTarget:self
-               action:@selector(cloudBoost)
-     forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Go" forState:UIControlStateNormal];
-    button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
-    [topView addSubview:button];
     
-    //UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
-   // self.navigationItem.leftBarButtonItem = popoverItem;
     
     
     dragDropManager = [OBDragDropManager sharedManager];
@@ -353,6 +356,21 @@ static NSInteger kNumberOfButtons = 20;
     topView = [[UIView alloc] initWithFrame:frame];
     topView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin;
     topView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    
+    
+    // GO BUTTON!
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button addTarget:self
+               action:@selector(cloudBoost)
+     forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"Go" forState:UIControlStateNormal];
+    button.frame = CGRectMake(80, 80, 40, 40);
+    [topView addSubview:button];
+    //UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
+    // self.navigationItem.leftBarButtonItem = popoverItem;
+
+    
+    
     [self.view addSubview:topView];
     [self.view addSubview:bottomView];
 
@@ -577,58 +595,104 @@ static NSInteger kLabelTag = 2323;
 -(OBDropAction) ovumMoved:(OBOvum*)ovum inView:(UIView*)view atLocation:(CGPoint)location
 {
      NSLog(@"Ovum<0x%x> %@ Moved. In view %@", (int)ovum, ovum.dataObject, view);
-    
+    /*
     NSMutableArray *inputNodes = ovum.input;
-    NSMutableArray *outputNodes = ovum.output;
-    
-    for(OBOvum * ovumLoop in inputNodes)
+    NSMutableArray *outputNodes = [NSMutableArray arrayWithArray:ovum.output];
+    if(ovum.outputLine){
+        for (int i=0; i<self.view.layer.sublayers.count; i++) {
+            if(i>1){
+                CALayer *layer = self.view.layer.sublayers[i];
+
+                [layer removeFromSuperlayer];}
+    }}
+
+    for(OBOvum * ovumLoop in dragDropManager.ovumList)
     {
         
+       
+        if(outputNodes.count>0)
+        {
+           for(OBOvum *outputter in outputNodes)
+           {
+               
+//            CGPoint location = [senderView.superview convertPoint:senderView.frame.origin toView:[UIApplication sharedApplication].keyWindow.rootViewController.view];
+
+  //          CGPoint translation = [recognizer translationInView:senderView];
+               CGPoint location = [senderView.superview convertPoint:senderView.frame.origin toView:[UIApplication sharedApplication].keyWindow.rootViewController.view];
+               
+               CGPoint pointOne = CGPointMake(location.x+senderView.frame.size.width-22, location.y+22);
+               CGPoint pointTwo = CGPointMake(pointOne.x +translation.x, pointOne.y +translation.y);
+
+               
+               
+        CGPoint pointOne = CGPointMake(ovumLoop.mainView.frame.origin.x + ovumLoop.mainView.frame.size.width- 22, ovumLoop.mainView.frame.origin.y + ovumLoop.mainView.frame.size.height-22);
+        
+               CGPoint pointTwo = CGPointMake(outputter.dragView.frame.origin.x +22, ovumLoop.dragView.frame.origin.y + ovumLoop.dragView.frame.size.height-22);
+
         UIBezierPath *path = [UIBezierPath bezierPath];
         
-        // [path moveToPoint:pointOne];
-        //[path addLineToPoint:pointTwo];
-        currentDragLine = [CAShapeLayer layer];
+         [path moveToPoint:pointOne];
+        [path addLineToPoint:pointTwo];
+        CAShapeLayer *dragLine = [CAShapeLayer layer];
         
-        currentDragLine.path = [path CGPath];
-        currentDragLine.strokeColor = [[UIColor blueColor] CGColor];
-        currentDragLine.lineWidth = 3.0;
-        currentDragLine.fillColor = [[UIColor clearColor] CGColor];
+        dragLine.path = [path CGPath];
+        dragLine.strokeColor = [[UIColor blueColor] CGColor];
+        dragLine.lineWidth = 3.0;
+        dragLine.fillColor = [[UIColor clearColor] CGColor];
         
-        [self.view.layer addSublayer:currentDragLine];
+        [self.view.layer addSublayer:dragLine];
 
-        
+        }}
     }
+    */
     
-    
-    
-   // CGFloat hiphopopotamus = 0.33 + 0.66 * location.y / self.view.frame.size.height;
-    
-    // This tester currently only supports dragging from left to right view
-    /*
-    if ([ovum.dataObject isKindOfClass:[NSNumber class]])
-    {
-        UIView *itemView = [self.view viewWithTag:[ovum.dataObject integerValue]];
-        if ([topViewContents containsObject:itemView])
-        {
-            view.layer.borderColor = [UIColor colorWithRed:hiphopopotamus green:0.0 blue:0.0 alpha:1.0].CGColor;
-            view.layer.borderWidth = 5.0;
-            
-            UILabel *label = (UILabel*) [ovum.dragView viewWithTag:kLabelTag];
-            label.text = @"Cannot Drop Here";
-            
-            return OBDropActionNone;
-        }
-    }*/
-    
-    //view.layer.borderColor = [UIColor colorWithRed:0.0 green:hiphopopotamus blue:0.0 alpha:1.0].CGColor;
-    //view.layer.borderWidth = 5.0;
-    
-    //UILabel *label = (UILabel*) [ovum.dragView viewWithTag:kLabelTag];
-    //label.text = [NSString stringWithFormat:@"Ovum at %@", NSStringFromCGPoint(location)];
     
     return OBDropActionMove;
 }
+
+-(void)clearTop
+{
+    for (int i=0; i<self.view.layer.sublayers.count; i++) {
+        if(i>1){
+            CALayer *layer = self.view.layer.sublayers[i];
+            
+            [layer removeFromSuperlayer];}}
+
+    [UIView animateWithDuration:0.4 animations:^{
+        for(OBOvum *ovum in dragDropManager.ovumList)
+        {
+            [ovum deleteOvum];
+            NSLog(@"Ovum<0x%x> %@ Exited", (int)ovum, ovum.dataObject);
+            
+            topView.layer.borderColor = [UIColor clearColor].CGColor;
+            topView.layer.borderWidth = 0.0;
+            UIView *itemView = ovum.dragView;
+            [UIView animateWithDuration:0.25 animations:^{
+                itemView.alpha=0.5;
+                itemView.frame = CGRectInset(itemView.frame, itemView.frame.size.width-40, itemView.frame.size.height-40);
+                
+            }completion:^(BOOL finished) {
+                
+                OBDragDropManager *manager = [OBDragDropManager sharedManager];
+                NSLog(@"pre remove ovumlist: %@",manager.ovumList);
+                [manager.ovumList removeObject:ovum];
+                if([topViewContents containsObject:itemView]){
+                    [[itemView subviews]
+                     makeObjectsPerformSelector:@selector(removeFromSuperview)];
+                    [itemView removeFromSuperview];
+                    [topViewContents removeObject:itemView];
+                    
+                }
+                
+            }];
+            
+            
+        }
+    }];
+
+
+}
+
 
 -(void) ovumExited:(OBOvum*)ovum inView:(UIView*)view atLocation:(CGPoint)location
 {
