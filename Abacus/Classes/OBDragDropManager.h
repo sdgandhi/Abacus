@@ -22,7 +22,7 @@
 // after the g-speak equivalent within the Ovipositor infrastructure.
 // It also is responsible for keeping track of the drag view (a visual representation
 // of the ovum)
-@interface OBOvum : NSObject 
+@interface OBOvum : NSObject
 {
 @private
   id<OBOvumSource> __weak source;

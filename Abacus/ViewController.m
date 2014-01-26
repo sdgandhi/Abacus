@@ -51,7 +51,7 @@ static NSInteger kNumberOfButtons = 20;
 
 -(void)createColorArray
 {
-    int numberOfColors = kNumberOfButtons;
+    NSInteger numberOfColors = kNumberOfButtons;
     colorArray = [[NSMutableArray alloc]init];
     for (int i=0; i<numberOfColors; i++)
     {
@@ -67,9 +67,6 @@ static NSInteger kNumberOfButtons = 20;
     
     
     itemView.backgroundColor = colorArray[indexOfView];
-    
-<<<<<<< HEAD
-=======
     [itemView.layer setCornerRadius:8];
     [itemView.layer setBorderWidth:5.0];
     CGFloat hue;
@@ -78,8 +75,6 @@ static NSInteger kNumberOfButtons = 20;
     CGFloat alpha;
     [itemView.backgroundColor getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
     itemView.layer.borderColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha].CGColor;
-
->>>>>>> 5a7d58519b785a36d1021a0c5756591526818889
     itemView.tag = kItemViewIndex++;
     
     UIView *linkView = [[UIView alloc]initWithFrame:CGRectMake(itemView.frame.size.width-44, 38, 44, 44)];
@@ -92,8 +87,7 @@ static NSInteger kNumberOfButtons = 20;
     [linkView addGestureRecognizer:recognizer];
     
     [itemView addSubview:linkView];
-    
-    
+
     return itemView;
 }
 
@@ -215,6 +209,71 @@ static NSInteger kNumberOfButtons = 20;
     //NSLog(@"Recognized link drag!");
     
     
+}
+
+- (OBOvum *)getOvumHead {
+    for(OBOvum *ovum in dragDropManager.ovumList)
+    {
+        if (ovum.output.count == 0)
+        {
+            return ovum;
+        }
+    }
+    return NULL;
+}
+
+- (void)cloudBoost {
+    NSString *jsonRequest = [[self getOvumHead] toJSON];
+    
+    NSURL *url = [NSURL URLWithString:@"http://default-environment-c3nuuemgkx.elasticbeanstalk.com/"];
+    //NSURL *url = [NSURL URLWithString:@"10.55.51.229:8080"];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSData *requestData = [NSData dataWithBytes:[jsonRequest UTF8String] length:[jsonRequest length]];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[requestData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: requestData];
+    
+    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+}
+
+#pragma mark - NSURLDelegate methods
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    // A response has been received, this is where we initialize the instance var you created
+    // so that we can append data to it in the didReceiveData method
+    // Furthermore, this method is called each time there is a redirect so reinitializing it
+    // also serves to clear it
+    _responseData = [[NSMutableData alloc] init];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    // Append the new data to the instance variable you declared
+    [_responseData appendData:data];
+    NSString *a = [[NSString alloc] initWithData:_responseData encoding:NSASCIIStringEncoding];
+    
+    NSLog(@"Response Data: %@", a);
+    
+    [self getOvumHead].values[0] = a;
+}
+
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection
+                  willCacheResponse:(NSCachedURLResponse*)cachedResponse {
+    // Return nil to indicate not necessary to store a cached response for this connection
+    return nil;
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    // The request is complete and data has been received
+    // You can parse the stuff in your instance variable now
+    
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    // The request has failed for some reason!
+    // Check the error var
 }
 
 
