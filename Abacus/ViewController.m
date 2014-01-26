@@ -279,7 +279,9 @@ static NSInteger kNumberOfButtons = 20;
 }
 
 - (void)cloudBoost {
-    NSMutableString *jsonRequest = [[NSMutableString alloc] initWithString:[[self getOvumHead] toJSON]];
+    if ([[self getOvumHead]toJSON]) {
+    
+        NSMutableString *jsonRequest = [[NSMutableString alloc] initWithString:[[self getOvumHead] toJSON]];
     //[jsonRequest appendString:@",{\"res\": 1,\"vars\": [{\"symbol\": \"x\",\"start\": 4,\"end\": 5}]}"];
     
     NSURL *url = [NSURL URLWithString:@"http://default-environment-c3nuuemgkx.elasticbeanstalk.com/"];
@@ -293,6 +295,7 @@ static NSInteger kNumberOfButtons = 20;
     [request setHTTPBody: requestData];
     
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+    }
 }
 
 #pragma mark - NSURLDelegate methods
@@ -314,7 +317,13 @@ static NSInteger kNumberOfButtons = 20;
 
     NSArray *results = [NSJSONSerialization JSONObjectWithData:_responseData options:kNilOptions error:&error];
     [self getOvumHead].values[0] = results[0];
+    
+    OBOvum *ovum = [self getOvumHead];
+    [self updateOvumValue:ovum];
+
 }
+
+
 
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection
                   willCacheResponse:(NSCachedURLResponse*)cachedResponse {
@@ -1040,6 +1049,16 @@ static NSInteger kLabelTag = 2323;
     //    [ovum setLabel:[NSString stringWithFormat:@"%@",ovum.values]];
         NSLog(@"Range is %@",ovum.values);
 
+        
+    }
+    
+    if([ovum.type isEqualToString:@"min"] || [ovum.type isEqualToString:@"max"])
+    {
+        if(ovum.values.count>0){
+        
+        float value = [ovum.values[0] floatValue];
+        [ovum setLabel:[NSString stringWithFormat:@"%g",value ]];
+        }
         
     }
     
