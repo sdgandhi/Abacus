@@ -94,7 +94,14 @@ static NSInteger kNumberOfButtons = 20;
     [itemView addSubview:inputView];
     
     UILabel *nameLabel =[[UILabel alloc]initWithFrame:CGRectMake(10, 10, itemView.frame.size.width-20, itemView.frame.size.height-54)];
-    //nameLabel.font = [UIFont font]
+    nameLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:35];
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.text=@"test fdsajkfhdkjshafkdjhfsakljdhfjkasd";
+    nameLabel.textAlignment = NSTextAlignmentCenter;
+    nameLabel.lineBreakMode =NSLineBreakByWordWrapping;
+    nameLabel.adjustsFontSizeToFitWidth=YES;
+    nameLabel.numberOfLines=2;
+    [itemView addSubview:nameLabel];
 
     
     
@@ -306,19 +313,19 @@ static NSInteger kNumberOfButtons = 20;
     {
         [xPositions addObject:[NSNumber numberWithInt:x]];
         x += self.view.frame.size.width + margin.width;
-        
 
     }
     
     
     // GO BUTTON!
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.backgroundColor = [UIColor redColor];
     [button addTarget:self
                action:@selector(cloudBoost)
      forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Go" forState:UIControlStateNormal];
     button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
-    [self.view addSubview:button];
+    [topView addSubview:button];
     
     //UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
    // self.navigationItem.leftBarButtonItem = popoverItem;
