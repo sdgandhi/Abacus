@@ -233,7 +233,7 @@
 				ORGANIZATIONNAME = "Sidhant Gandhi";
 				TargetAttributes = {
 					DC02AB83189379E1004DA6E0 = {
-						DevelopmentTeam = 2QBT4HF69Q;
+						DevelopmentTeam = CUCB33MFQZ;
 						SystemCapabilities = {
 							com.apple.InterAppAudio = {
 								enabled = 0;

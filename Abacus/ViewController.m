@@ -279,8 +279,12 @@ static NSInteger kNumberOfButtons = 20;
 }
 
 - (void)cloudBoost {
-    NSMutableString *jsonRequest = [[NSMutableString alloc] initWithString:[[self getOvumHead] toJSON]];
+    NSMutableString *jsonRequest = [[NSMutableString alloc] initWithString:@"["];
+    [jsonRequest appendString:[[self getOvumHead] toJSON]];
+    [jsonRequest appendString:@"]"];
     //[jsonRequest appendString:@",{\"res\": 1,\"vars\": [{\"symbol\": \"x\",\"start\": 4,\"end\": 5}]}"];
+    
+    NSLog(@"json object: %@", jsonRequest);
     
     NSURL *url = [NSURL URLWithString:@"http://default-environment-c3nuuemgkx.elasticbeanstalk.com/"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -313,7 +317,10 @@ static NSInteger kNumberOfButtons = 20;
     NSError *error = nil;
 
     NSArray *results = [NSJSONSerialization JSONObjectWithData:_responseData options:kNilOptions error:&error];
-    [self getOvumHead].values[0] = results[0];
+    //NSLog(@"result is: %@", results[0]);
+    //[self getOvumHead].values[0] = results[0];
+    NSLog(@"result is: %@", a);
+    [self getOvumHead].values[0] = a;
 }
 
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection
