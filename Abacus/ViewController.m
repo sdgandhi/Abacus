@@ -1039,6 +1039,13 @@ static NSInteger kLabelTag = 2323;
         
     }
     
+    for(OBOvum *outputNode in ovum.output)
+    {
+        if(outputNode.input.count>1)
+        {
+            [self updateOvumValue:outputNode];
+        }
+    }
 
     
 }
