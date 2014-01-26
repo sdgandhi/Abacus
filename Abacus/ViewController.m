@@ -81,20 +81,23 @@ static NSInteger kNumberOfButtons = 20;
     
     [linkView.layer setCornerRadius:3.0];
     linkView.backgroundColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha];
+    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(recognizeLinkDrag:)];
+    linkView.tag =indexOfView;
+    [linkView addGestureRecognizer:recognizer];
+    
+    [itemView addSubview:linkView];
 
     UIView *inputView = [[UIView alloc]initWithFrame:CGRectMake(0, itemView.frame.size.height-44, 44, 44)];
     
     [inputView.layer setCornerRadius:3.0];
     inputView.backgroundColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha];
     [itemView addSubview:inputView];
+    
+    UILabel *nameLabel =[[UILabel alloc]initWithFrame:CGRectMake(10, 10, itemView.frame.size.width-20, itemView.frame.size.height-54)];
+    //nameLabel.font = [UIFont font]
 
     
     
-    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(recognizeLinkDrag:)];
-    linkView.tag =indexOfView;
-    [linkView addGestureRecognizer:recognizer];
-    
-    [itemView addSubview:linkView];
 
     return itemView;
 }
