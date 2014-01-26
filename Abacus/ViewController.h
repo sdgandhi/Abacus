@@ -12,8 +12,9 @@
 #import "ViewController.h"
 
 
-@interface ViewController : UIViewController <OBOvumSource, OBDropZone, UIPopoverControllerDelegate,UITextFieldDelegate, UITextViewDelegate>
+@interface ViewController : UIViewController <OBOvumSource, OBDropZone, UIPopoverControllerDelegate, NSURLConnectionDelegate>
 {
+    NSMutableData *_responseData;
     UIScrollView *bottomView;
     NSMutableArray *bottomViewContents;
     UIView *topView;
