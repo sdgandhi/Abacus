@@ -80,7 +80,6 @@
 
 -(void)setLabel:(NSString *)label;
 -(void)setTypeLabel:(NSString *)label;
-
 @end
 
 
@@ -117,5 +116,6 @@
 -(void) updateOvum:(OBOvum *)ovum withZoom:(CGFloat)zoom;
 -(void)cleanupOvum:(OBOvum *)ovum;
 -(OBOvum *)getOvumWithTag:(int)tag;
+
 @end
 

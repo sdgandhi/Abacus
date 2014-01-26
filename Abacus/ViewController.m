@@ -1087,6 +1087,19 @@ static NSInteger kLabelTag = 2323;
 }
 
 
+-(void)checkOvumList
+{
+    NSArray *list = [NSArray arrayWithArray:dragDropManager.ovumList];
+    
+    for(OBOvum *ovum in list)
+    {
+        if(ovum.currentDropHandlingView != topView)
+        {
+            [dragDropManager.ovumList removeObject:ovum];
+        }
+            }
+    
+}
 
 
 
