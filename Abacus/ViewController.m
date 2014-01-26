@@ -255,10 +255,10 @@ static NSInteger kNumberOfButtons = 20;
 }
 
 - (void)cloudBoost {
-    NSString *jsonRequest = [[self getOvumHead] toJSON];
+    NSMutableString *jsonRequest = [[NSMutableString alloc] initWithString:[[self getOvumHead] toJSON]];
+    //[jsonRequest appendString:@",{\"res\": 1,\"vars\": [{\"symbol\": \"x\",\"start\": 4,\"end\": 5}]}"];
     
     NSURL *url = [NSURL URLWithString:@"http://default-environment-c3nuuemgkx.elasticbeanstalk.com/"];
-    //NSURL *url = [NSURL URLWithString:@"10.55.51.229:8080"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     NSData *requestData = [NSData dataWithBytes:[jsonRequest UTF8String] length:[jsonRequest length]];
     
@@ -285,10 +285,11 @@ static NSInteger kNumberOfButtons = 20;
     // Append the new data to the instance variable you declared
     [_responseData appendData:data];
     NSString *a = [[NSString alloc] initWithData:_responseData encoding:NSASCIIStringEncoding];
-    
     NSLog(@"Response Data: %@", a);
-    
-    [self getOvumHead].values[0] = a;
+    NSError *error = nil;
+
+    NSArray *results = [NSJSONSerialization JSONObjectWithData:_responseData options:kNilOptions error:&error];
+    [self getOvumHead].values[0] = results[0];
 }
 
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection
@@ -329,9 +330,6 @@ static NSInteger kNumberOfButtons = 20;
         x += self.view.frame.size.width + margin.width;
 
     }
-    
-    
-    
     
     
     dragDropManager = [OBDragDropManager sharedManager];
