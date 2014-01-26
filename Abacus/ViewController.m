@@ -49,12 +49,27 @@ static NSInteger kNumberOfButtons = 20;
     scrollView.contentSize = contentBounds.size;
 }
 
+-(void)createColorArray
+{
+    int numberOfColors = kNumberOfButtons;
+    colorArray = [[NSMutableArray alloc]init];
+    for (int i=0; i<numberOfColors; i++)
+    {
+        static CGFloat (^randFloat)(CGFloat, CGFloat) = ^(CGFloat min, CGFloat max) { return min + (max-min) * (CGFloat)random() / RAND_MAX; };
+         [colorArray addObject: [UIColor colorWithHue:randFloat(0.0, 1.0) saturation:randFloat(0.5, 1.0) brightness:randFloat(0.3, 1.0) alpha:1.0]];
+
+    }
+}
 
 -(UIView *) createItemView : (int)indexOfView
 {
-    static CGFloat (^randFloat)(CGFloat, CGFloat) = ^(CGFloat min, CGFloat max) { return min + (max-min) * (CGFloat)random() / RAND_MAX; };
     UIView *itemView = [[UIView alloc] initWithFrame:CGRectMake(0, [xPositions[indexOfView] intValue], 180, 120)];
-    itemView.backgroundColor = [UIColor colorWithHue:randFloat(0.0, 1.0) saturation:randFloat(0.5, 1.0) brightness:randFloat(0.3, 1.0) alpha:1.0];
+    
+    
+    itemView.backgroundColor = colorArray[indexOfView];
+    
+    
+    
     itemView.tag = kItemViewIndex++;
     
     UIView *linkView = [[UIView alloc]initWithFrame:CGRectMake(itemView.frame.size.width-44, 38, 44, 44)];
@@ -150,6 +165,7 @@ static NSInteger kNumberOfButtons = 20;
 	// Do any additional setup after loading the view, typically from a nib.
     
     self.view.backgroundColor = [UIColor greenColor];
+    [self createColorArray];
     currentDragLine = [CAShapeLayer layer];
 
     CGSize margin = CGSizeMake(50.0, 15.0);
@@ -170,7 +186,7 @@ static NSInteger kNumberOfButtons = 20;
     dragDropManager = [OBDragDropManager sharedManager];
     
     CGRect viewFrame = self.view.frame;
-    CGRect frame = CGRectMake(0, viewFrame.size.height-407, viewFrame.size.width+400, 150);
+    CGRect frame = CGRectMake(0, viewFrame.size.height-406, viewFrame.size.width+400, 150);
     NSLog(@"frame size is: %@",NSStringFromCGRect(frame));
     
     //frame = CGRectInset(frame, 20.0, 20.0);
@@ -203,6 +219,7 @@ static NSInteger kNumberOfButtons = 20;
         UIView *itemView = [self createItemView: i];
         [bottomViewContents addObject:itemView];
         [bottomView addSubview:itemView];
+        [itemView setClipsToBounds:YES];
         
         UIGestureRecognizer *recognizer = [dragDropManager createDragDropGestureRecognizerWithClass:[UIPanGestureRecognizer class] source:self];
         [itemView addGestureRecognizer:recognizer];
@@ -323,7 +340,7 @@ static NSInteger kNumberOfButtons = 20;
 
 -(OBOvum *)findDroppedInOvum:(CGPoint)dropSpot
 {
-    NSLog(@"dragDropManager.ovumList: %@",dragDropManager.ovumList);
+   // NSLog(@"dragDropManager.ovumList: %@",dragDropManager.ovumList);
     
     
     for (UIView *view in topViewContents)
@@ -431,9 +448,30 @@ static NSInteger kLabelTag = 2323;
     
     view.layer.borderColor = [UIColor clearColor].CGColor;
     view.layer.borderWidth = 0.0;
+    UIView *itemView = ovum.dragView;
+    [UIView animateWithDuration:0.2 animations:^{
+        itemView.alpha=0.5;
+        itemView.frame = CGRectInset(itemView.frame, itemView.frame.size.width-40, itemView.frame.size.height-40);
+
+    }completion:^(BOOL finished) {
+        
+        OBDragDropManager *manager = [OBDragDropManager sharedManager];
+        NSLog(@"pre remove ovumlist: %@",manager.ovumList);
+        [manager.ovumList removeObject:ovum];
+        if([topViewContents containsObject:itemView]){
+            [[itemView subviews]
+             makeObjectsPerformSelector:@selector(removeFromSuperview)];
+            [itemView removeFromSuperview];
+            [topViewContents removeObject:itemView];
+            
+        }
+
+    }];
     
-    UILabel *label = (UILabel*) [ovum.dragView viewWithTag:kLabelTag];
-    [label removeFromSuperview];
+
+    
+    //UILabel *label = (UILabel*) [ovum.dragView viewWithTag:kLabelTag];
+    //[label removeFromSuperview];
 }
 
 -(void) ovumDropped:(OBOvum*)ovum inView:(UIView*)view atLocation:(CGPoint)location
@@ -460,10 +498,11 @@ static NSInteger kLabelTag = 2323;
     
     if (itemView)
     {
+        NSLog(@"test");
         if(location.y<600) //Dropped in top view
         {
             [itemView removeFromSuperview];
-            NSLog(@"index of item view: %i",currentDragIndex);
+            NSLog(@"Dropped in top view. Index of item view: %i",currentDragIndex);
             [bottomViewContents removeObject:itemView];
             
             [topView insertSubview:itemView atIndex:insertionIndex];
@@ -491,24 +530,24 @@ static NSInteger kLabelTag = 2323;
             UIGestureRecognizer *recognizer = [dragDropManager createDragDropGestureRecognizerWithClass:[UIPanGestureRecognizer class] source:self];
             [itemView addGestureRecognizer:recognizer];*/
         }
-        else  //dropped in bottom view
+       /* else  //dropped in bottom view
         {
             if([topViewContents containsObject:itemView]){
             [itemView removeFromSuperview];
             [topViewContents removeObject:itemView];
-                OBDragDropManager *manager = [OBDragDropManager sharedManager];
-                [manager.ovumList removeObject:ovum];
+                
             }
-            else
-            {
-               
-            }
-            
+            OBDragDropManager *manager = [OBDragDropManager sharedManager];
+            NSLog(@"pre remove ovumlist: %@",manager.ovumList);
+            [manager.ovumList removeObject:ovum];
+            NSLog(@"post remove ovumlist: %@",manager.ovumList);
+
+
             //[bottomView insertSubview:itemView atIndex:insertionIndex];
            // [bottomViewContents insertObject:itemView atIndex:insertionIndex];
             
             
-        }
+        }*/
         
     }
 }
@@ -519,6 +558,8 @@ static NSInteger kLabelTag = 2323;
     NSLog(@"Called handleDropAnimationForOvum");
     UIView *itemView =[self.view viewWithTag:[ovum.dataObject integerValue]];
     itemView.hidden=NO;
+    ovum.mainView.frame = dragView.frame;
+
     
     if (itemView)
     {
@@ -533,7 +574,7 @@ static NSInteger kLabelTag = 2323;
       //  CGRect frame = CGRectMake(x, margin.height, view.frame.size.width, view.frame.size.height);
         //view.frame = frame;
         dragView.frame = viewFrame;
-        ovum.mainView.frame = viewFrame;
+        //ovum.mainView.frame = viewFrame;
         
         [self layoutScrollView:bottomView withContents:bottomViewContents];
 

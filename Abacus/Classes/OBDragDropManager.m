@@ -43,7 +43,7 @@
         OBDragDropManager *manager = [OBDragDropManager sharedManager];
       //  NSLog(@"ovum list pre: %@",manager.ovumList);
         [manager.ovumList addObject:self];
-        NSLog(@"Inited ovum. New ovum list: %@",manager.ovumList);
+        NSLog(@"+Inited ovum. Now %i Ovums  New ovum list: %@",manager.ovumList.count, manager.ovumList);
 
     }
     return self;

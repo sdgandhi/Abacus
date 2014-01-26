@@ -23,6 +23,8 @@
     int currentDragIndex;
     
     CAShapeLayer *currentDragLine;
+    
+    NSMutableArray *colorArray;
 }
 
 @end
