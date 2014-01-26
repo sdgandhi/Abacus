@@ -325,7 +325,7 @@ static NSInteger kNumberOfButtons = 20;
                action:@selector(cloudBoost)
      forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Go" forState:UIControlStateNormal];
-    button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
+    button.frame = CGRectMake(0.0, 0.0, 160.0, 40.0);
     [topView addSubview:button];
     
     //UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
