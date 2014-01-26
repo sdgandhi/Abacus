@@ -279,10 +279,12 @@ static NSInteger kNumberOfButtons = 8;
 }
 
 - (void)cloudBoost {
-    if ([[self getOvumHead]toJSON]) {
-    
-        NSMutableString *jsonRequest = [[NSMutableString alloc] initWithString:[[self getOvumHead] toJSON]];
+    NSMutableString *jsonRequest = [[NSMutableString alloc] initWithString:@"["];
+    [jsonRequest appendString:[[self getOvumHead] toJSON]];
+    [jsonRequest appendString:@"]"];
     //[jsonRequest appendString:@",{\"res\": 1,\"vars\": [{\"symbol\": \"x\",\"start\": 4,\"end\": 5}]}"];
+    
+    NSLog(@"json object: %@", jsonRequest);
     
     NSURL *url = [NSURL URLWithString:@"http://default-environment-c3nuuemgkx.elasticbeanstalk.com/"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -295,7 +297,6 @@ static NSInteger kNumberOfButtons = 8;
     [request setHTTPBody: requestData];
     
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
-    }
 }
 
 #pragma mark - NSURLDelegate methods
@@ -315,13 +316,13 @@ static NSInteger kNumberOfButtons = 8;
     NSLog(@"Response Data: %@", a);
     NSError *error = nil;
 
-    NSArray *results = [NSJSONSerialization JSONObjectWithData:_responseData options:kNilOptions error:&error];
-    [self getOvumHead].values[0] = results[0];
-    
+    //NSArray *results = [NSJSONSerialization JSONObjectWithData:_responseData options:kNilOptions error:&error];
+    //NSLog(@"result is: %@", results[0]);
+    //[self getOvumHead].values[0] = results[0];
+    NSLog(@"result is: %@", a);
+    [self getOvumHead].values[0] = a;
     OBOvum *ovum = [self getOvumHead];
-    [self updateOvumValue:ovum];
-
-}
+    [self updateOvumValue:ovum];}
 
 
 

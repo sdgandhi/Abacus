@@ -125,6 +125,9 @@
     } else {
         NSMutableString *inputJSON = [[NSMutableString alloc] init];
         for (OBOvum *inputOvum in input) {
+            if ([type isEqualToString:@"extract"]){
+                [inputJSON appendString:@"\"High\","];
+            }
             [inputJSON appendString:[inputOvum toJSON]];
             if (!([inputOvum isEqual:[input lastObject]])) {
                 [inputJSON appendString:@" , "];
