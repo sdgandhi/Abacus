@@ -40,6 +40,11 @@
     if (self) {
         self.isCentered = YES;
         self.shouldScale = NO;
+        OBDragDropManager *manager = [OBDragDropManager sharedManager];
+      //  NSLog(@"ovum list pre: %@",manager.ovumList);
+        [manager.ovumList addObject:self];
+        NSLog(@"Inited ovum. New ovum list: %@",manager.ovumList);
+
     }
     return self;
 }
@@ -50,9 +55,14 @@
     if (self) {
         self.isCentered = YES;
         self.shouldScale = NO;
+        self.type = ovumType;
+
+
+        OBDragDropManager *manager = [OBDragDropManager sharedManager];
+        [manager.ovumList addObject:self];
+        
     }
     
-    self.type = ovumType;
     
     return self;
 }
@@ -60,6 +70,9 @@
 -(void) dealloc
 {
     self.source = nil;
+    OBDragDropManager *manager = [OBDragDropManager sharedManager];
+    [manager.ovumList removeObject:self];
+
     
 }
 
@@ -79,6 +92,17 @@
         json = [NSString stringWithFormat:@"{\n\"type\":\"%@\",\n\"in\":[\n%@]}",type,inputJSON];
     } 
     return json;
+}
+-(void)addOutputNode:(OBOvum *)newOutputNode
+{
+    [self.output addObject:newOutputNode];
+    
+}
+
+-(void)addInputNode:(OBOvum *)newInputNode
+{
+    [self.output addObject:newInputNode];
+
 }
 
 @end
@@ -124,6 +148,8 @@
                                                       usingBlock:^(NSNotification *notification) {
                                                           [__self handleApplicationOrientationChange:notification];
                                                       }];
+        
+        self.ovumList = [[NSMutableArray alloc]init];
     }
     return self;
 }
@@ -597,6 +623,7 @@
 
 -(void) cleanupOvum:(OBOvum*)ovum
 {
+    NSLog(@"Clean up ovum");
     if (ovum.source)
     {
         if ([ovum.source respondsToSelector:@selector(ovumDragEnded:)])
@@ -607,6 +634,7 @@
     ovum.dragView = nil;
     ovum.currentDropHandlingView = nil;
 }
+
 /*
 -(OBOvum *)copyOvum:(OBOvum*)ovum
 {
@@ -683,5 +711,7 @@
         ovum.dropAction = [dropZone ovumMoved:ovum inView:ovum.currentDropHandlingView atLocation:locationInView];
     }
 }
+
+
 
 @end

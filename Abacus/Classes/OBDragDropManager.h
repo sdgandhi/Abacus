@@ -50,14 +50,14 @@
 @property (nonatomic, assign) BOOL isCentered;
 @property (nonatomic, assign) BOOL shouldScale;
 
+
+@property (nonatomic, strong)UIView *mainView;
+
 // node properties
 @property (nonatomic, strong) NSString *type;
-@property (nonatomic, strong) NSArray *values;
-@property (nonatomic, strong) NSArray *input;
-
-//node linkage
-@property (nonatomic,strong)NSMutableArray *inputNodes;
-@property (nonatomic,strong)NSMutableArray *ouputNodes;
+@property (nonatomic, strong) NSMutableArray *values;
+@property (nonatomic, strong) NSMutableArray *input;
+@property (nonatomic, strong) NSMutableArray *output;
 
 
 
@@ -67,6 +67,11 @@
 
 -(id)initWithType:(NSString *)type;
 -(NSString*) toJSON;
+
+-(void)addOutputNode:(OBOvum *)newOutputNode;
+
+-(void)addInputNode:(OBOvum *)newOutputNode;
+
 
 @end
 
@@ -83,6 +88,8 @@
 @property (nonatomic, strong) UIWindow *overlayWindow;
 @property (nonatomic, assign) CGPoint currentLocationInHostWindow;
 @property (nonatomic, assign) CGPoint currentLocationInOverlayWindow;
+
+@property (nonatomic,strong)NSMutableArray *ovumList;
 
 +(OBDragDropManager *) sharedManager;
 

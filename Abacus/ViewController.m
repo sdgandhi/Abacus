@@ -43,7 +43,7 @@ static NSInteger kNumberOfButtons = 20;
         x += view.frame.size.width + margin.width;
         
         contentBounds = CGRectUnion(contentBounds, view.frame);
-        NSLog(@"Content bounds: %@", NSStringFromCGRect(contentBounds));
+       // NSLog(@"Content bounds: %@", NSStringFromCGRect(contentBounds));
     }
     
     scrollView.contentSize = contentBounds.size;
@@ -79,9 +79,13 @@ static NSInteger kNumberOfButtons = 20;
     CGPoint translation = [recognizer translationInView:senderView];
     CGPoint position = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
   //  [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
+    CGPoint pointOne = CGPointMake(location.x+senderView.frame.size.width-22, location.y+22);
+    CGPoint pointTwo = CGPointMake(pointOne.x +translation.x, pointOne.y +translation.y);
+    //NSLog(@"Point one : %@",NSStringFromCGPoint(pointOne));
+    //NSLog(@"Point two : %@",NSStringFromCGPoint(pointTwo));
 
 
-    NSLog(@"senderview location is %@",NSStringFromCGPoint(location));
+    //NSLog(@"senderview location is %@",NSStringFromCGPoint(location));
                           
   /*  if(recognizer.state == UIGestureRecognizerStateBegan)
     {//start drawing line
@@ -105,16 +109,20 @@ static NSInteger kNumberOfButtons = 20;
     if(recognizer.state == UIGestureRecognizerStateEnded)
     {
         NSLog(@"Gesture ended");
+        OBOvum *droppedInOvum = [self findDroppedInOvum:pointTwo];
+        if(droppedInOvum)
+        {
+            NSLog(@"Found ovum: %@",droppedInOvum);
+            [recognizer.ovum addOutputNode:droppedInOvum];
+            [droppedInOvum addInputNode:recognizer.ovum];
+        }
+    
     }
     else
     {
         [currentDragLine removeFromSuperlayer];
 
         UIBezierPath *path = [UIBezierPath bezierPath];
-        CGPoint pointOne = CGPointMake(location.x+senderView.frame.size.width-22, location.y+22);
-        CGPoint pointTwo = CGPointMake(pointOne.x +translation.x, pointOne.y +translation.y);
-        NSLog(@"Point one : %@",NSStringFromCGPoint(pointOne));
-        NSLog(@"Point two : %@",NSStringFromCGPoint(pointTwo));
         
         [path moveToPoint:pointOne];
         [path addLineToPoint:pointTwo];
@@ -163,7 +171,8 @@ static NSInteger kNumberOfButtons = 20;
     
     CGRect viewFrame = self.view.frame;
     CGRect frame = CGRectMake(0, viewFrame.size.height-407, viewFrame.size.width+400, 150);
-    NSLog(@"test");
+    NSLog(@"frame size is: %@",NSStringFromCGRect(frame));
+    
     //frame = CGRectInset(frame, 20.0, 20.0);
     bottomView = [[UIScrollView alloc] initWithFrame:frame];
   //  bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleRightMargin;
@@ -261,10 +270,23 @@ static NSInteger kNumberOfButtons = 20;
 
 -(OBOvum *) createOvumFromView:(UIView*)sourceView
 {
-    OBOvum *ovum = [[OBOvum alloc] init];
-    ovum.dataObject = [NSNumber numberWithInteger:sourceView.tag];
-    ovum.dragView.frame = sourceView.frame;
-    return ovum;
+    for(OBOvum* ovum in dragDropManager.ovumList)
+    {
+        if (ovum.mainView == sourceView) {
+            NSLog(@"Found old ovum, reusing");
+            return ovum;
+        }
+    }
+    
+    OBOvum *newOvum = [[OBOvum alloc] init];
+    
+    newOvum.dataObject = [NSNumber numberWithInteger:sourceView.tag];
+    newOvum.dragView.frame = sourceView.frame;
+    newOvum.mainView= sourceView;
+    NSLog(@"new ovum mainview : %@", newOvum.mainView);
+    NSLog(@"Couldn't find old ovum, creating new");
+
+    return newOvum;
 }
 
 
@@ -299,7 +321,28 @@ static NSInteger kNumberOfButtons = 20;
     return dragView;
 }
 
-
+-(OBOvum *)findDroppedInOvum:(CGPoint)dropSpot
+{
+    NSLog(@"dragDropManager.ovumList: %@",dragDropManager.ovumList);
+    
+    
+    for (UIView *view in topViewContents)
+    {
+        if (CGRectContainsPoint(view.frame, dropSpot)) {
+            for(OBOvum* ovum in dragDropManager.ovumList)
+            {
+                if(view.tag == [ovum.dataObject intValue])
+                {
+                    return ovum;
+                }
+            }
+            
+           
+        }
+    }
+    
+    return nil;
+}
 -(void) dragViewWillAppear:(UIView *)dragView inWindow:(UIWindow*)window atLocation:(CGPoint)location
 {
     NSLog(@"drag view will appear");
@@ -453,6 +496,8 @@ static NSInteger kLabelTag = 2323;
             if([topViewContents containsObject:itemView]){
             [itemView removeFromSuperview];
             [topViewContents removeObject:itemView];
+                OBDragDropManager *manager = [OBDragDropManager sharedManager];
+                [manager.ovumList removeObject:ovum];
             }
             else
             {
@@ -488,6 +533,7 @@ static NSInteger kLabelTag = 2323;
       //  CGRect frame = CGRectMake(x, margin.height, view.frame.size.width, view.frame.size.height);
         //view.frame = frame;
         dragView.frame = viewFrame;
+        ovum.mainView.frame = viewFrame;
         
         [self layoutScrollView:bottomView withContents:bottomViewContents];
 
