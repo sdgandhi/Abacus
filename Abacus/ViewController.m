@@ -68,13 +68,22 @@ static NSInteger kNumberOfButtons = 20;
     
     itemView.backgroundColor = colorArray[indexOfView];
     
-    
-    
+    [itemView.layer setCornerRadius:8];
+    [itemView.layer setBorderWidth:5.0];
+    CGFloat hue;
+    CGFloat sat;
+    CGFloat bright;
+    CGFloat alpha;
+    [itemView.backgroundColor getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
+    itemView.layer.borderColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha].CGColor;
+
     itemView.tag = kItemViewIndex++;
     
     UIView *linkView = [[UIView alloc]initWithFrame:CGRectMake(itemView.frame.size.width-44, 38, 44, 44)];
-    linkView.backgroundColor= [UIColor brownColor];
     
+    [linkView.layer setCornerRadius:3.0];
+    linkView.backgroundColor = [UIColor colorWithHue:hue saturation:sat brightness:bright-0.2 alpha:alpha];
+
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(recognizeLinkDrag:)];
     
     [linkView addGestureRecognizer:recognizer];
@@ -192,7 +201,7 @@ static NSInteger kNumberOfButtons = 20;
     //frame = CGRectInset(frame, 20.0, 20.0);
     bottomView = [[UIScrollView alloc] initWithFrame:frame];
   //  bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleRightMargin;
-    bottomView.backgroundColor = [UIColor blueColor];
+    bottomView.backgroundColor = [UIColor lightGrayColor];
     bottomView.clipsToBounds = NO;
     bottomView.scrollEnabled = YES;
     //bottomView.pagingEnabled = YES;
