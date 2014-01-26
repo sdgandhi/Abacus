@@ -299,6 +299,16 @@ static NSInteger kNumberOfButtons = 20;
 
     }
     
+    
+    // GO BUTTON!
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button addTarget:self
+               action:@selector(cloudBoost)
+     forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"Go" forState:UIControlStateNormal];
+    button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
+    [self.view addSubview:button];
+    
     //UIBarButtonItem *popoverItem = [[UIBarButtonItem alloc] initWithTitle:@"More Items" style:UIBarButtonItemStyleBordered target:self action:@selector(showMoreItems:)];
    // self.navigationItem.leftBarButtonItem = popoverItem;
     
@@ -432,6 +442,7 @@ static NSInteger kNumberOfButtons = 20;
         [newOvum setType:@"avg"];
     } else if ([newOvum getIndexOfOvum] == 4){
         [newOvum setType:@"extract"];
+        [newOvum setValues:[NSMutableArray arrayWithObjects:@"High", nil]];
     }
     
     NSLog(@"new ovum mainview : %@", newOvum.mainView);
