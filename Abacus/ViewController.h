@@ -32,4 +32,6 @@
     NSMutableArray *colorArray;
 }
 
+-(void)checkOvumList;
+
 @end

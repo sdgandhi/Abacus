@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		49FCDBB91895769100A8AA98 /* bottom_wood_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 49FCDBB81895769100A8AA98 /* bottom_wood_texture.png */; };
+		49FCDBBB189578FF00A8AA98 /* loadScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 49FCDBBA189578FF00A8AA98 /* loadScreen.png */; };
 		DC02AB88189379E1004DA6E0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC02AB87189379E1004DA6E0 /* Foundation.framework */; };
 		DC02AB8A189379E1004DA6E0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC02AB89189379E1004DA6E0 /* CoreGraphics.framework */; };
 		DC02AB8C189379E1004DA6E0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC02AB8B189379E1004DA6E0 /* UIKit.framework */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		49FCDBB81895769100A8AA98 /* bottom_wood_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_wood_texture.png; sourceTree = "<group>"; };
+		49FCDBBA189578FF00A8AA98 /* loadScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loadScreen.png; sourceTree = "<group>"; };
 		DC02AB84189379E1004DA6E0 /* Abacus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Abacus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC02AB87189379E1004DA6E0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		DC02AB89189379E1004DA6E0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				DC02AB8F189379E1004DA6E0 /* Abacus-Info.plist */,
+				49FCDBBA189578FF00A8AA98 /* loadScreen.png */,
 				DC02AB90189379E1004DA6E0 /* InfoPlist.strings */,
 				49FCDBB81895769100A8AA98 /* bottom_wood_texture.png */,
 				DC02AB93189379E1004DA6E0 /* main.m */,
@@ -269,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49FCDBB91895769100A8AA98 /* bottom_wood_texture.png in Resources */,
+				49FCDBBB189578FF00A8AA98 /* loadScreen.png in Resources */,
 				DC02AB92189379E1004DA6E0 /* InfoPlist.strings in Resources */,
 				DC02AB9A189379E1004DA6E0 /* Images.xcassets in Resources */,
 			);

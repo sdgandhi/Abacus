@@ -316,12 +316,15 @@ static NSInteger kNumberOfButtons = 20;
     NSLog(@"Response Data: %@", a);
     NSError *error = nil;
 
-    NSArray *results = [NSJSONSerialization JSONObjectWithData:_responseData options:kNilOptions error:&error];
+    //NSArray *results = [NSJSONSerialization JSONObjectWithData:_responseData options:kNilOptions error:&error];
     //NSLog(@"result is: %@", results[0]);
     //[self getOvumHead].values[0] = results[0];
     NSLog(@"result is: %@", a);
     [self getOvumHead].values[0] = a;
-}
+    OBOvum *ovum = [self getOvumHead];
+    [self updateOvumValue:ovum];}
+
+
 
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection
                   willCacheResponse:(NSCachedURLResponse*)cachedResponse {
@@ -709,9 +712,11 @@ static NSInteger kLabelTag = 2323;
         NSArray *ovums = [NSArray arrayWithArray:dragDropManager.ovumList];
         currentDragLine=nil;
 
-    for (int i=0; i<=self.view.layer.sublayers.count; i++) {
+        NSArray* sublayers = [NSArray arrayWithArray:self.view.layer.sublayers];
+
+    for (int i=0; i<sublayers.count; i++) {
         if(i>1){
-            CALayer *layer = self.view.layer.sublayers[i];
+            CALayer *layer = sublayers[i];
             
             [layer removeFromSuperlayer];}}
 
@@ -746,7 +751,9 @@ static NSInteger kLabelTag = 2323;
         }
 
     }
+    [topView setNeedsDisplay];
 
+    [self.view setNeedsDisplay];
 }
 
 
@@ -1046,6 +1053,23 @@ static NSInteger kLabelTag = 2323;
         
     }
     
+    if([ovum.type isEqualToString:@"min"] || [ovum.type isEqualToString:@"max"])
+    {
+        if(ovum.values.count>0){
+        
+        float value = [ovum.values[0] floatValue];
+        [ovum setLabel:[NSString stringWithFormat:@"%g",value ]];
+        }
+        
+    }
+    
+    for(OBOvum *outputNode in ovum.output)
+    {
+        if(outputNode.input.count>1)
+        {
+            [self updateOvumValue:outputNode];
+        }
+    }
 
     
 }
@@ -1087,6 +1111,19 @@ static NSInteger kLabelTag = 2323;
 }
 
 
+-(void)checkOvumList
+{
+    NSArray *list = [NSArray arrayWithArray:dragDropManager.ovumList];
+    
+    for(OBOvum *ovum in list)
+    {
+        if(ovum.currentDropHandlingView != topView)
+        {
+            [dragDropManager.ovumList removeObject:ovum];
+        }
+            }
+    
+}
 
 
 
