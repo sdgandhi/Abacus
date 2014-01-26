@@ -12,7 +12,7 @@
 
 
 static NSInteger kItemViewIndex = 100;
-static NSInteger kNumberOfButtons = 20;
+static NSInteger kNumberOfButtons = 8;
 
 
 @implementation ViewController
@@ -908,6 +908,8 @@ static NSInteger kLabelTag = 2323;
         }
         else
         {
+            [ovum setTypeLabel:textField.text];
+
             [self updateOvumValue:ovum];
             
             
