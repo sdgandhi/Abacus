@@ -102,7 +102,10 @@
             }
         }
         json = [NSString stringWithFormat:@"{\n\"type\":\"%@\",\n\"in\":[\n%@]}",type,inputJSON];
-    } 
+    }
+    
+    
+    
     return json;
 }
 -(void)addOutputNode:(OBOvum *)newOutputNode
