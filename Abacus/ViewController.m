@@ -321,6 +321,7 @@ static NSInteger kNumberOfButtons = 8;
     //[self getOvumHead].values[0] = results[0];
     NSLog(@"result is: %@", a);
     [self getOvumHead].values[0] = a;
+    NSLog(@"ovum head value is %@",   [self getOvumHead].values[0]);
     OBOvum *ovum = [self getOvumHead];
     [self updateOvumValue:ovum];
 }
