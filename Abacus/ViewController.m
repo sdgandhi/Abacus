@@ -421,6 +421,17 @@ static NSInteger kNumberOfButtons = 20;
     newOvum.dataObject = [NSNumber numberWithInteger:sourceView.tag];
     newOvum.dragView.frame = sourceView.frame;
     newOvum.mainView= sourceView;
+    
+    if([newOvum getIndexOfOvum] == 0){
+        [newOvum setType:@"yahoo-finance"];
+    } else if ([newOvum getIndexOfOvum] == 1){
+        [newOvum setType:@"max"];
+    } else if ([newOvum getIndexOfOvum] == 1){
+        [newOvum setType:@"min"];
+    } else if ([newOvum getIndexOfOvum] == 1){
+        [newOvum setType:@"avg"];
+    }
+    
     NSLog(@"new ovum mainview : %@", newOvum.mainView);
     NSLog(@"Couldn't find old ovum, creating new");
 
