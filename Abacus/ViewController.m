@@ -322,8 +322,8 @@ static NSInteger kNumberOfButtons = 20;
     NSLog(@"result is: %@", a);
     [self getOvumHead].values[0] = a;
     OBOvum *ovum = [self getOvumHead];
-    [self updateOvumValue:ovum];}
-
+    [self updateOvumValue:ovum];
+}
 
 
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection
@@ -1034,22 +1034,17 @@ static NSInteger kLabelTag = 2323;
         
         
     }
-    else if ([ovum.type isEqualToString:@"range"])
+    else if([ovum.type isEqualToString: @"%"])
     {
-        OBOvum *min = ovum.input[0];
-        OBOvum *max = ovum.input[1];
-
-        float rem =[max.values[0] floatValue] - [min.values[0] floatValue];
+        OBOvum *dividend = ovum.input[0];
+        OBOvum *divisor = ovum.input[1];
         
-        ovum.values = [[NSMutableArray alloc]init];
+        float value =  [dividend.values[0] integerValue] % [divisor.values[0] integerValue];
         
-        for (int i =0; i< (int)rem; i++)
-        {
-            [ovum.values addObject:[NSString stringWithFormat:@"%i",i]];
-        }
-    //    [ovum setLabel:[NSString stringWithFormat:@"%@",ovum.values]];
-        NSLog(@"Range is %@",ovum.values);
-
+        ovum.values = [[NSMutableArray alloc]initWithObjects:[NSString stringWithFormat:@"%f",value], nil];
+        
+        [ovum setLabel:[NSString stringWithFormat:@"%g",value]];
+        
         
     }
     
@@ -1060,7 +1055,6 @@ static NSInteger kLabelTag = 2323;
         float value = [ovum.values[0] floatValue];
         [ovum setLabel:[NSString stringWithFormat:@"%g",value ]];
         }
-        
     }
     
     for(OBOvum *outputNode in ovum.output)
